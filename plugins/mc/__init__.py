@@ -22,8 +22,8 @@ for command in commands.keys():
         command = session.cmd.name[0]
         mc_command = commands[command].get_command(session, session.current_arg_text.strip())
         if mc_command:
-            response = await send_command(mc_command)
-            await session.send(source_id, commands[command].parse_response(response))
+            response = await send_command(source_id, mc_command)
+            await session.send(commands[command].parse_response(response))
 
 
 def pre_choose_server(source_id):
