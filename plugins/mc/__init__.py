@@ -2,6 +2,7 @@ from nonebot import on_command, CommandSession
 from config import SERVER_RCON, DEFAULT_SERVER
 from mcrcon import MCRcon
 
+from plugins.mc.permissions import permission_manager
 from plugins.mc import command_ping, command_whitelist, command_select
 from utils.coolq_utils import *
 

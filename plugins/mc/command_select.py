@@ -1,10 +1,12 @@
-from nonebot import CommandSession
-from plugins.mc import permissions
+from plugins.mc.permissions import permission_manager
+from plugins.mc import chosen_server, get_id
+from config import SERVER_RCON
+
+permission_manager.register('select')
 
 
-def get_command(session: CommandSession, args: str, permission_list=None):
-    permission = 'select'
-
-
-def parse_response(response):
-    return response
+def get_command(session, args: str):
+    if permission_manager.validate(session, 'select'):
+        server_name = args.strip()
+        if server_name in SERVER_RCON:
+            chosen_server[get_id(session)] = server_name

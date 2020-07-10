@@ -1,8 +1,10 @@
-from plugins.mc import permissions
+from plugins.mc.permissions import permission_manager
+
+permission_manager.register('ping')
 
 
-def get_command(session, args, permission_list=None):
-    if permissions.validate(session, 'ping'):
+def get_command(session, args):
+    if permission_manager.validate(session, 'ping'):
         return 'list'
 
 

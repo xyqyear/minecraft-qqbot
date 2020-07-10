@@ -1,8 +1,12 @@
-from nonebot import CommandSession
-from plugins.mc import permissions
+from plugins.mc.permissions import permission_manager
+
+permission_manager.register('whitelist.list')
+permission_manager.register('whitelist.reload')
+permission_manager.register('whitelist.add')
+permission_manager.register('whitelist.remove')
 
 
-def get_command(session: CommandSession, args: str, permission_list=None):
+def get_command(session, args: str):
     permission = ''
     if args.startswith('list'):
         permission = 'whitelist.list'
@@ -13,7 +17,7 @@ def get_command(session: CommandSession, args: str, permission_list=None):
     elif args.startswith('remove'):
         permission = 'whitelist.remove'
 
-    if permissions.validate(session, permission):
+    if permission_manager.validate(session, permission):
         return f'whitelist {args}'
 
 

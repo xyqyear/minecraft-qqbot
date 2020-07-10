@@ -23,6 +23,10 @@ PERMISSIONS = {'group':
                               'vanilla.ban',
                               'vanilla.unban',
                               'vanilla.restart']
-                         }
+                        }
+                   },
+               'private':
+                   {12345679:
+                        ['*']
                     }
                }
