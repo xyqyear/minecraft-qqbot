@@ -1,4 +1,5 @@
 from utils.coolq_utils import *
+from config import SERVER_RCON
 
 
 class PermissionManager:
@@ -36,9 +37,54 @@ class PermissionManager:
             for permission in permissions:
                 self.user_permissions['private'][user_id] += self.expand_permission(permission)
 
-    # TODO
-    def expand_permission(self, general_permission: str):
-        pass
+    # used to parse permission
+    def expand_permission(self, perm_str: str, server_names=None, all_permissions=None) -> list:
+        # used for test
+        if not server_names:
+            server_names = [i for i in SERVER_RCON.keys()]
+        if not all_permissions:
+            all_permissions = self.all_permissions
+
+        perm2process_list = perm_str.split('.')
+        servers = []
+        if perm2process_list[0] == '*':
+            for server_name in server_names:
+                servers.append(server_name)
+        else:
+            servers.append(perm2process_list[0])
+
+        # the function for parsing asterisks in permission string
+        def parse_asterisk(perm2process_left, permissions_pre_left, string_pre_parsed=''):
+            if string_pre_parsed.startswith('.'):
+                string_pre_parsed = string_pre_parsed[1:]
+
+            if not permissions_pre_left:
+                yield string_pre_parsed
+
+            if isinstance(permissions_pre_left, dict):
+                current_node = perm2process_left[0] if perm2process_left else '*'
+                if current_node == '*':
+                    for perm_node, permissions_left in permissions_pre_left.items():
+                        for string_parsed in parse_asterisk(['*'],
+                                                            permissions_left,
+                                                            f'{string_pre_parsed}.{perm_node}'):
+                            yield string_parsed
+                else:
+                    for string_parsed in parse_asterisk(perm2process_left[1:],
+                                                        permissions_pre_left[current_node],
+                                                        f'{string_pre_parsed}.{current_node}'):
+                        yield string_parsed
+
+            else:
+                for perm_node in permissions_pre_left:
+                    yield f'{string_pre_parsed}.{perm_node}'
+
+        expanded_permissions = list()
+        for server in servers:
+            for perm in parse_asterisk(perm2process_list[1:], all_permissions):
+                expanded_permissions.append(f'{server}.{perm}')
+
+        return expanded_permissions
 
     def validate(self, session: CommandSession, permission: str):
         detail_type = get_detail_type(session)
