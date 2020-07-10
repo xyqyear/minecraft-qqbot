@@ -5,7 +5,6 @@ class PermissionManager:
     def __init__(self):
         self.all_permissions = dict()
         self.user_permissions = dict()
-
         self.servers = []
 
     def put_permission(self, node_dict, node_permission):
@@ -21,8 +20,24 @@ class PermissionManager:
             if len(node_permission) > 1:
                 node_dict[node_permission[0]].append(node_permission[1])
 
+    def load_user_permissions(self, config_user_permissions: dict):
+        # handling group permissions
+        self.user_permissions['group'] = dict()
+        for group_id, permissions in config_user_permissions['group'].items():
+            self.user_permissions['group'][group_id] = {'default': list(), 'admin': list()}
+            for role in self.user_permissions['group'][group_id].keys():
+                for permission in permissions[role]:
+                    self.user_permissions['group'][group_id][role] += self.expand_permission(permission)
+
+        # handling private permissions
+        self.user_permissions['private'] = dict()
+        for user_id, permissions in config_user_permissions['private']:
+            self.user_permissions['private'][user_id] = list()
+            for permission in permissions:
+                self.user_permissions['private'][user_id] += self.expand_permission(permission)
+
     # TODO
-    def load_user_permissions(self, ):
+    def expand_permission(self, general_permission: str):
         pass
 
     def validate(self, session: CommandSession, permission: str):
