@@ -8,21 +8,23 @@ class PermissionManager:
         self.user_permissions = dict()
         self.servers = []
 
-    def load_user_permissions(self, config_user_permissions: dict):
+    def load_user_permissions(self, config_user_permissions: dict, server_names=None, all_permissions=None):
         # handling group permissions
         self.user_permissions['group'] = dict()
         for group_id, permissions in config_user_permissions['group'].items():
             self.user_permissions['group'][group_id] = {'default': list(), 'admin': list()}
             for role in self.user_permissions['group'][group_id].keys():
                 for permission in permissions[role]:
-                    self.user_permissions['group'][group_id][role] += self.expand_permission(permission)
+                    self.user_permissions['group'][group_id][role] += \
+                        self.expand_permission(permission, server_names, all_permissions)
 
         # handling private permissions
         self.user_permissions['private'] = dict()
-        for user_id, permissions in config_user_permissions['private']:
+        for user_id, permissions in config_user_permissions['private'].items():
             self.user_permissions['private'][user_id] = list()
             for permission in permissions:
-                self.user_permissions['private'][user_id] += self.expand_permission(permission)
+                self.user_permissions['private'][user_id] += \
+                    self.expand_permission(permission, server_names, all_permissions)
 
     # used to parse permission
     def expand_permission(self, perm_str: str, server_names=None, all_permissions=None) -> list:
@@ -48,8 +50,8 @@ class PermissionManager:
             if not permissions_pre_left:
                 yield string_pre_parsed
 
+            current_node = perm2process_left[0] if perm2process_left else '*'
             if isinstance(permissions_pre_left, dict):
-                current_node = perm2process_left[0] if perm2process_left else '*'
                 if current_node == '*':
                     for perm_node, permissions_left in permissions_pre_left.items():
                         for string_parsed in parse_asterisk(['*'],
@@ -63,8 +65,11 @@ class PermissionManager:
                         yield string_parsed
 
             else:
-                for perm_node in permissions_pre_left:
-                    yield f'{string_pre_parsed}.{perm_node}'
+                if current_node == '*':
+                    for perm_node in permissions_pre_left:
+                        yield f'{string_pre_parsed}.{perm_node}'
+                else:
+                    yield f'{string_pre_parsed}.{current_node}'
 
         expanded_permissions = list()
         for server in servers:
@@ -73,7 +78,7 @@ class PermissionManager:
 
         return expanded_permissions
 
-    def validate(self, session: CommandSession, permission: str):
+    def validate(self, session, permission: str):
         detail_type = get_detail_type(session)
         if detail_type == 'group':
             group_id = get_group_id(session)
