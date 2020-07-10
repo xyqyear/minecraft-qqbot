@@ -13,17 +13,20 @@ commands = {'ping': command_ping,
 chosen_server = {}
 
 
+# TODO handling permissions here
+# TODO change return type of get_command function to {'command': 'the command', 'permission': 'something.something'}
+# TODO or this ['command', 'permission_node0.permission_node1'], or tuple
 for command in commands.keys():
     @on_command(command, only_to_me=False)
     async def _(session: CommandSession):
         source_id = get_id(session)
         pre_choose_server(source_id)
 
-        command = session.cmd.name[0]
-        mc_command = commands[command].get_command(session, session.current_arg_text.strip())
+        chat_command = session.cmd.name[0]
+        mc_command = commands[chat_command].get_command(session, session.current_arg_text.strip())
         if mc_command:
             response = await send_command(source_id, mc_command)
-            await session.send(commands[command].parse_response(response))
+            await session.send(commands[chat_command].parse_response(response))
 
 
 def pre_choose_server(source_id):
