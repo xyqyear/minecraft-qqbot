@@ -1,3 +1,6 @@
+from utils.coolq_utils import *
+
+
 class PermissionManager:
     def __init__(self):
         self.all_permissions = dict()
@@ -22,9 +25,22 @@ class PermissionManager:
     def load_user_permissions(self, ):
         pass
 
-    # TODO
-    def validate(self):
-        pass
+    def validate(self, session: CommandSession, permission: str):
+        detail_type = get_detail_type(session)
+        if detail_type == 'group':
+            group_id = get_group_id(session)
+            if group_id in self.user_permissions['group']:
+                if permission in self.user_permissions['group'][group_id]['default']:
+                    return True
+                elif get_sender_role(session) in ('admin', 'owner') and \
+                        permission in self.user_permissions[detail_type][group_id]['admin']:
+                    return True
+
+        else:
+            sender_id = get_sender_id(session)
+            if sender_id in self.user_permissions['private']:
+                if permission in self.user_permissions['private'][sender_id]:
+                    return True
 
     def add_server(self, server_name):
         self.servers.append(server_name)
