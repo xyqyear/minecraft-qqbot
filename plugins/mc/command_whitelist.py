@@ -1,5 +1,5 @@
 from plugins.mc.permissions import permission_manager
-from plugins.mc import no_session
+from plugins.mc.utils import no_session
 
 permission_manager.register('whitelist.list')
 permission_manager.register('whitelist.reload')

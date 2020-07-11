@@ -72,10 +72,3 @@ def get_server(chat_args: str):
     # if the code above didn't return, it means there is no server specification
     # so the command should be executed as is for every server
     return chat_args, [i for i in SERVER_PROPERTIES.keys()]
-
-
-def no_session(func):
-    """if there the session argument is not required, we can use this decorator"""
-    def wrapper(session, *args, **kw):
-        return func(*args, **kw)
-    return wrapper
