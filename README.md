@@ -1,5 +1,7 @@
 ## MC-QQbot
 
+***still not runnable***
+
 ### doc
 
 - commands should be like
