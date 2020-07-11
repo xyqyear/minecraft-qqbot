@@ -8,5 +8,5 @@ permission_manager.register('select')
 def get_command(session, args: str):
     if permission_manager.validate(session, 'select'):
         server_name = args.strip()
-        if server_name in SERVER_RCON:
+        if server_name in SERVER_RCON.keys():
             chosen_server[get_id(session)] = server_name
