@@ -78,6 +78,7 @@ class PermissionManager:
 
         return expanded_permissions
 
+    # permission here includes server name
     def validate(self, session, permission: str):
         detail_type = get_detail_type(session)
         if detail_type == 'group':
