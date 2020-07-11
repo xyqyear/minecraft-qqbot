@@ -14,30 +14,30 @@ class PermissionManager:
         # handling group permissions
         self.user_permissions['group'] = dict()
         for group_id, permissions in config_user_permissions['group'].items():
-            self.user_permissions['group'][group_id] = {'default': list(), 'admin': list()}
+            self.user_permissions['group'][group_id] = {'default': set(), 'admin': set()}
             for role in self.user_permissions['group'][group_id].keys():
                 for permission in permissions[role]:
-                    self.user_permissions['group'][group_id][role] += \
+                    self.user_permissions['group'][group_id][role] |= \
                         self.expand_permission(permission, server_names, all_permissions)
 
         # handling private permissions
         self.user_permissions['private'] = dict()
         for user_id, permissions in config_user_permissions['private'].items():
-            self.user_permissions['private'][user_id] = list()
+            self.user_permissions['private'][user_id] = set()
             for permission in permissions:
-                self.user_permissions['private'][user_id] += \
+                self.user_permissions['private'][user_id] |= \
                     self.expand_permission(permission, server_names, all_permissions)
 
-    def expand_permission(self, perm_str: str, server_names=None, all_permissions=None) -> list:
+    def expand_permission(self, perm_str: str, server_names=None, all_permissions=None) -> set:
         """ handle asterisks in perm string like 'whitelist.*' """
         # used for test
         if not server_names:
-            server_names = [i for i in SERVER_PROPERTIES.keys()]
+            server_names = (i for i in SERVER_PROPERTIES.keys())
         if not all_permissions:
             all_permissions = self.all_permissions
 
         perm2process_list = perm_str.split('.')
-        servers = []
+        servers = list()
         if perm2process_list[0] == '*':
             for server_name in server_names:
                 servers.append(server_name)
@@ -73,10 +73,10 @@ class PermissionManager:
                 else:
                     yield f'{string_pre_parsed}.{current_node}'
 
-        expanded_permissions = list()
+        expanded_permissions = set()
         for server in servers:
             for perm in parse_asterisk(perm2process_list[1:], all_permissions):
-                expanded_permissions.append(f'{server}.{perm}')
+                expanded_permissions.add(f'{server}.{perm}')
 
         return expanded_permissions
 
@@ -106,6 +106,7 @@ class PermissionManager:
 
         return False
 
+    # TODO bug found here, may need a redo
     def put_permission(self, node_dict, node_permission):
         """parse current registering permission string into dict"""
         if len(node_permission) > 2:
@@ -115,10 +116,10 @@ class PermissionManager:
 
         else:
             if node_permission[0] not in node_dict:
-                node_dict[node_permission[0]] = list()
+                node_dict[node_permission[0]] = set()
 
             if len(node_permission) > 1:
-                node_dict[node_permission[0]].append(node_permission[1])
+                node_dict[node_permission[0]].add(node_permission[1])
 
     def register(self, perm):
         """register permissions, used by modules"""

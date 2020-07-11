@@ -1,6 +1,6 @@
 ## MC-QQbot
 
-***still not runnable***
+***runnable, but not fully tested yet***
 
 ### doc
 
