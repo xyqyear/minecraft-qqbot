@@ -1,40 +1,44 @@
-from nonebot import on_command, CommandSession
-from config import SERVER_RCON, DEFAULT_SERVER
+import re
+
+from nonebot import on_command
+from config import SERVER_PROPERTIES, PERMISSIONS
 from mcrcon import MCRcon
 
 from plugins.mc.permissions import permission_manager
-from plugins.mc import command_ping, command_whitelist, command_select
+from plugins.mc import command_ping, command_whitelist
 from utils.coolq_utils import *
 
+# registering the commands
+# get_command: (session, args) -> (mc_command, permission)
 commands = {'ping': command_ping,
-            'whitelist': command_whitelist,
-            'select': command_select}
+            'whitelist': command_whitelist}
 
-chosen_server = {}
+# permissions should be loaded after modules registered all the permissions
+permission_manager.load_user_permissions()
 
-
-# TODO handling permissions here
-# TODO change return type of get_command function to {'command': 'the command', 'permission': 'something.something'}
-# TODO or this ['command', 'permission_node0.permission_node1'], or tuple
+# binding commands
 for command in commands.keys():
-    @on_command(command, only_to_me=False)
+    @on_command(command,  only_to_me=False)
     async def _(session: CommandSession):
-        source_id = get_id(session)
-        pre_choose_server(source_id)
-
         chat_command = session.cmd.name[0]
-        mc_command = commands[chat_command].get_command(session, session.current_arg_text.strip())
-        if mc_command:
-            response = await send_command(source_id, mc_command)
-            await session.send(commands[chat_command].parse_response(response))
+        chat_args, server_names = get_server(session.current_arg_text.strip())
+        mc_command, permission = commands[chat_command].get_command(session, chat_args)
 
-
-def pre_choose_server(source_id):
-    if source_id not in chosen_server:
-        chosen_server[source_id] = DEFAULT_SERVER
+        for server_name in server_names:
+            # permission string returned does not include server name
+            permission = f'{server_name}.{permission}'
+            # if the person has the required permission, then perform the command on corresponding server
+            # and parse the response from the server and send it to the source
+            if permission_manager.validate(session, permission):
+                response = await send_command(server_name, mc_command)
+                await session.send(commands[chat_command].parse_response(response))
+            # could be used for no permission exception
+            else:
+                pass
 
 
 def get_id(session):
+    """get sender id from the session"""
     if get_detail_type(session) == 'private':
         return get_sender_id(session)
     elif get_detail_type(session) == 'group':
@@ -43,9 +47,35 @@ def get_id(session):
         return get_discuss_id(session)
 
 
-async def send_command(source_id, mc_command: str):
-    server_name = chosen_server[source_id]
-    with MCRcon(SERVER_RCON[server_name]['host'],
-                port=SERVER_RCON[server_name]['port'],
-                password=SERVER_RCON[server_name]['password']) as mcr:
+async def send_command(server_name, mc_command: str):
+    """send command to the server specified"""
+    with MCRcon(SERVER_PROPERTIES[server_name]['address'],
+                port=SERVER_PROPERTIES[server_name]['rcon_port'],
+                password=SERVER_PROPERTIES[server_name]['rcon_password']) as mcr:
         return mcr.command(mc_command)
+
+
+def get_server(chat_args: str):
+    """
+    get which server we should run the command on from chat command args
+    :param chat_args: the chopped chat
+    :return chat command args without server specification and server_names as a list
+    """
+    for server_name, server_properties in SERVER_PROPERTIES.items():
+        name_pool = [server_name]
+        if 'aka' in server_properties:
+            name_pool += server_properties['aka']
+        for aka_name in name_pool:
+            if chat_args.endswith(f'@{aka_name}'):
+                return re.sub(rf'@{aka_name}$', '', chat_args).strip(), [server_name]
+
+    # if the code above didn't return, it means there is no server specification
+    # so the command should be executed as is for every server
+    return chat_args, [i for i in SERVER_PROPERTIES.keys()]
+
+
+def no_session(func):
+    """if there the session argument is not required, we can use this decorator"""
+    def wrapper(session, *args, **kw):
+        return func(*args, **kw)
+    return wrapper

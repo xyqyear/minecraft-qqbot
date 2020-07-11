@@ -1,4 +1,5 @@
 from plugins.mc.permissions import permission_manager
+from plugins.mc import no_session
 
 permission_manager.register('whitelist.list')
 permission_manager.register('whitelist.reload')
@@ -6,19 +7,16 @@ permission_manager.register('whitelist.add')
 permission_manager.register('whitelist.remove')
 
 
-def get_command(session, args: str):
-    permission = ''
+@no_session
+def get_command(args: str):
     if args.startswith('list'):
-        permission = 'whitelist.list'
+        return 'whitelist list', 'whitelist.list'
     elif args.startswith('reload'):
-        permission = 'whitelist.reload'
+        return 'whitelist reload', 'whitelist.reload'
     elif args.startswith('add'):
-        permission = 'whitelist.add'
+        return 'whitelist add', 'whitelist.add'
     elif args.startswith('remove'):
-        permission = 'whitelist.remove'
-
-    if permission_manager.validate(session, permission):
-        return f'whitelist {args}'
+        return 'whitelist remove', 'whitelist.remove'
 
 
 def parse_response(response):
