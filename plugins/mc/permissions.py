@@ -1,14 +1,16 @@
 from utils.coolq_utils import *
-from config import SERVER_RCON
+from config import SERVER_PROPERTIES, PERMISSIONS
 
 
 class PermissionManager:
     def __init__(self):
         self.all_permissions = dict()
         self.user_permissions = dict()
-        self.servers = []
 
-    def load_user_permissions(self, config_user_permissions: dict, server_names=None, all_permissions=None):
+    def load_user_permissions(self, config_user_permissions, server_names=None, all_permissions=None):
+        """load permission from config file or arguments"""
+        config_user_permissions = PERMISSIONS if not config_user_permissions else config_user_permissions
+
         # handling group permissions
         self.user_permissions['group'] = dict()
         for group_id, permissions in config_user_permissions['group'].items():
@@ -26,11 +28,11 @@ class PermissionManager:
                 self.user_permissions['private'][user_id] += \
                     self.expand_permission(permission, server_names, all_permissions)
 
-    # used to parse permission
     def expand_permission(self, perm_str: str, server_names=None, all_permissions=None) -> list:
+        """ handle asterisks in perm string like 'whitelist.*' """
         # used for test
         if not server_names:
-            server_names = [i for i in SERVER_RCON.keys()]
+            server_names = [i for i in SERVER_PROPERTIES.keys()]
         if not all_permissions:
             all_permissions = self.all_permissions
 
@@ -80,6 +82,12 @@ class PermissionManager:
 
     # permission here includes server name
     def validate(self, session, permission: str):
+        """
+        validates user permission
+        :param session: CommandSession got from nonebot
+        :param permission: permission string including server name, e.g. 'vanilla.ping'
+        :return: if the invoker of the session has the permission, return True, else False
+        """
         detail_type = get_detail_type(session)
         if detail_type == 'group':
             group_id = get_group_id(session)
@@ -96,10 +104,10 @@ class PermissionManager:
                 if permission in self.user_permissions['private'][sender_id]:
                     return True
 
-    def add_server(self, server_name):
-        self.servers.append(server_name)
+        return False
 
     def put_permission(self, node_dict, node_permission):
+        """parse current registering permission string into dict"""
         if len(node_permission) > 2:
             if node_permission[0] not in node_dict:
                 node_dict[node_permission[0]] = dict()
@@ -113,6 +121,7 @@ class PermissionManager:
                 node_dict[node_permission[0]].append(node_permission[1])
 
     def register(self, perm):
+        """register permissions, used by modules"""
         self.put_permission(self.all_permissions, perm.split('.'))
 
 
