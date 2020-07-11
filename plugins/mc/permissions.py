@@ -7,7 +7,7 @@ class PermissionManager:
         self.all_permissions = dict()
         self.user_permissions = dict()
 
-    def load_user_permissions(self, config_user_permissions, server_names=None, all_permissions=None):
+    def load_user_permissions(self, config_user_permissions=None, server_names=None, all_permissions=None):
         """load permission from config file or arguments"""
         config_user_permissions = PERMISSIONS if not config_user_permissions else config_user_permissions
 
