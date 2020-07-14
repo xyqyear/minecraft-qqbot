@@ -53,25 +53,17 @@ class PermissionManager:
                 yield string_pre_parsed
 
             current_node = perm2process_left[0] if perm2process_left else '*'
-            if isinstance(permissions_pre_left, dict):
-                if current_node == '*':
-                    for perm_node, permissions_left in permissions_pre_left.items():
-                        for string_parsed in parse_asterisk(['*'],
-                                                            permissions_left,
-                                                            f'{string_pre_parsed}.{perm_node}'):
-                            yield string_parsed
-                else:
-                    for string_parsed in parse_asterisk(perm2process_left[1:],
-                                                        permissions_pre_left[current_node],
-                                                        f'{string_pre_parsed}.{current_node}'):
+            if current_node == '*':
+                for perm_node, permissions_left in permissions_pre_left.items():
+                    for string_parsed in parse_asterisk(['*'],
+                                                        permissions_left,
+                                                        f'{string_pre_parsed}.{perm_node}'):
                         yield string_parsed
-
             else:
-                if current_node == '*':
-                    for perm_node in permissions_pre_left:
-                        yield f'{string_pre_parsed}.{perm_node}'
-                else:
-                    yield f'{string_pre_parsed}.{current_node}'
+                for string_parsed in parse_asterisk(perm2process_left[1:],
+                                                    permissions_pre_left[current_node],
+                                                    f'{string_pre_parsed}.{current_node}'):
+                    yield string_parsed
 
         expanded_permissions = set()
         for server in servers:
@@ -109,17 +101,10 @@ class PermissionManager:
     # TODO bug found here, may need a redo
     def put_permission(self, node_dict, node_permission):
         """parse current registering permission string into dict"""
-        if len(node_permission) > 2:
+        if node_permission:
             if node_permission[0] not in node_dict:
                 node_dict[node_permission[0]] = dict()
             self.put_permission(node_dict[node_permission[0]], node_permission[1:])
-
-        else:
-            if node_permission[0] not in node_dict:
-                node_dict[node_permission[0]] = set()
-
-            if len(node_permission) > 1:
-                node_dict[node_permission[0]].add(node_permission[1])
 
     def register(self, perm):
         """register permissions, used by modules"""
