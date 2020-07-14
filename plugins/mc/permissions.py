@@ -98,7 +98,6 @@ class PermissionManager:
 
         return False
 
-    # TODO bug found here, may need a redo
     def put_permission(self, node_dict, node_permission):
         """parse current registering permission string into dict"""
         if node_permission:
