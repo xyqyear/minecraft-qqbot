@@ -1,5 +1,7 @@
 ## MC-QQbot
 
+***don't use it, unless you want to use a piece of shit***
+
 ### doc
 
 - commands should be like
@@ -30,3 +32,6 @@
     
     parse_response function receives *permission: str* and *response: str*, 
     returns *response_parse: str*
+    
+    finally, in \_\_init__.py file in plugins.mc, the module you created should be 
+    imported and added to commands: dict
