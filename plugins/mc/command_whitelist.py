@@ -1,5 +1,4 @@
 from plugins.mc.permissions import permission_manager
-from plugins.mc.utils import no_session
 
 permission_manager.register('whitelist.list')
 permission_manager.register('whitelist.reload')
@@ -7,8 +6,7 @@ permission_manager.register('whitelist.add')
 permission_manager.register('whitelist.remove')
 
 
-@no_session
-def get_command(args: str):
+def get_command(session, args: str):
     if args.startswith('list'):
         return 'whitelist list', 'whitelist.list'
     elif args.startswith('reload'):

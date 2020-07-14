@@ -1,11 +1,9 @@
 from plugins.mc.permissions import permission_manager
-from plugins.mc.utils import no_session
 
 permission_manager.register('ping')
 
 
-@no_session
-def get_command(args):
+def get_command(session, args):
     return 'list', 'ping'
 
 

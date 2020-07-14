@@ -1,12 +1,10 @@
 from plugins.mc.permissions import permission_manager
-from plugins.mc.utils import no_session
 
-permission_manager.register('ping')
+permission_manager.register('restart')
 
 
-@no_session
-def get_command(args):
-    return 'list', 'ping'
+def get_command(session, args):
+    return 'stop', 'restart'
 
 
 def parse_response(permission, response):

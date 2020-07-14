@@ -5,13 +5,14 @@ from config import SERVER_PROPERTIES, DEFAULT_SERVER
 from mcrcon import MCRcon
 
 from plugins.mc.permissions import permission_manager
-from plugins.mc import command_ping, command_whitelist
+from plugins.mc import command_ping, command_whitelist, command_restart
 from utils.coolq_utils import *
 
 # registering the commands
 # get_command: (session, args) -> (mc_command, permission)
 commands = {'ping': command_ping,
-            'whitelist': command_whitelist}
+            'whitelist': command_whitelist,
+            'restart': command_restart}
 
 # permissions should be loaded after modules registered all the permissions
 permission_manager.load_user_permissions()
