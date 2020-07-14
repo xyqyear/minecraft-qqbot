@@ -1,7 +1,7 @@
 import re
 
 from nonebot import on_command
-from config import SERVER_PROPERTIES, PERMISSIONS
+from config import SERVER_PROPERTIES, DEFAULT_SERVER
 from mcrcon import MCRcon
 
 from plugins.mc.permissions import permission_manager
@@ -70,5 +70,5 @@ def get_server(chat_args: str):
                 return re.sub(rf'@{aka_name}$', '', chat_args).strip(), [server_name]
 
     # if the code above didn't return, it means there is no server specification
-    # so the command should be executed as is for every server
-    return chat_args, [i for i in SERVER_PROPERTIES.keys()]
+    # so the command should be executed in default server
+    return chat_args, [DEFAULT_SERVER]

@@ -8,6 +8,8 @@ PORT = 8080
 SERVER_RCON = {'servername1': {'address': 'address1', 'rcon_port': 25575, 'rcon_password': 'secret', 'aka': ['s1']},
                'servername2': {'address': 'address2', 'rcon_port': 25575, 'rcon_password': 'secret', 'aka': ['s2']}}
 
+DEFAULT_SERVER = 'servername1'
+
 PERMISSIONS = {'group':
                    {12345678:
                         {'default':

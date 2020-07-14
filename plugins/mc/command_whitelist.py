@@ -14,9 +14,9 @@ def get_command(args: str):
     elif args.startswith('reload'):
         return 'whitelist reload', 'whitelist.reload'
     elif args.startswith('add'):
-        return 'whitelist add', 'whitelist.add'
+        return f'whitelist {args}', 'whitelist.add'
     elif args.startswith('remove'):
-        return 'whitelist remove', 'whitelist.remove'
+        return f'whitelist {args}', 'whitelist.remove'
 
 
 def parse_response(response):
