@@ -11,6 +11,7 @@ from utils.coolq_utils import *
 # registering the commands
 # get_command: (session, args) -> (mc_command, permission)
 commands = {'ping': command_ping,
+            'list': command_ping,
             'whitelist': command_whitelist,
             'restart': command_restart}
 
