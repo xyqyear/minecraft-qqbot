@@ -2,6 +2,8 @@
 
 ***don't use it, unless you want to use a piece of shit***
 
+***the doc bellow is solely used to prevent me from forgetting things and make the repository looks better***
+
 ### doc
 
 - commands should be like
@@ -35,3 +37,5 @@
     
     finally, in \_\_init__.py file in plugins.mc, the module you created should be 
     imported and added to commands: dict
+    
+    additionally, a **useless** decorator is provided if you don't want session parameter to be passed in.
