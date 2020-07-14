@@ -3,6 +3,8 @@ from config import SERVER_PROPERTIES, PERMISSIONS
 
 
 class PermissionManager:
+    __slots__ = ('all_permissions', 'user_permissions')
+
     def __init__(self):
         self.all_permissions = dict()
         self.user_permissions = dict()
