@@ -26,12 +26,12 @@ for command in commands.keys():
 
         for server_name in server_names:
             # permission string returned does not include server name
-            permission = f'{server_name}.{permission}'
+            s_permission = f'{server_name}.{permission}'
             # if the person has the required permission, then perform the command on corresponding server
             # and parse the response from the server and send it to the source
-            if permission_manager.validate(session, permission):
+            if permission_manager.validate(session, s_permission):
                 response = await send_command(server_name, mc_command)
-                await session.send(commands[chat_command].parse_response(response))
+                await session.send(commands[chat_command].parse_response(permission, response))
             # could be used for no permission exception
             else:
                 pass

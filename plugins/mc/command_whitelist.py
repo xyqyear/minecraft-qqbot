@@ -19,5 +19,5 @@ def get_command(args: str):
         return f'whitelist {args}', 'whitelist.remove'
 
 
-def parse_response(response):
+def parse_response(permission, response):
     return response

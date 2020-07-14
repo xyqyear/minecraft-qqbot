@@ -9,5 +9,5 @@ def get_command(args):
     return 'list', 'ping'
 
 
-def parse_response(response):
+def parse_response(permission, response):
     return response
