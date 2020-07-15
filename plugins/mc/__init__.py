@@ -5,7 +5,7 @@ from config import SERVER_PROPERTIES, DEFAULT_SERVER
 from mcrcon import MCRcon
 
 from plugins.mc.permissions import permission_manager
-from plugins.mc import command_ping, command_whitelist, command_restart
+from plugins.mc import command_ping, command_whitelist, command_restart, command_ban, command_unban
 from utils.coolq_utils import *
 
 # registering the commands
@@ -13,7 +13,10 @@ from utils.coolq_utils import *
 commands = {'ping': command_ping,
             'list': command_ping,
             'whitelist': command_whitelist,
-            'restart': command_restart}
+            'restart': command_restart,
+            'ban': command_ban,
+            'unban': command_unban,
+            'pardon': command_unban}
 
 # permissions should be loaded after modules registered all the permissions
 permission_manager.load_user_permissions()
