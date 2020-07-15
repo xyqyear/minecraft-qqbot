@@ -62,9 +62,10 @@ async def send_command(server_name, mc_command: str):
         return mcr.command(mc_command)
 
 
-def get_server(chat_args: str):
+def get_server(chat_args: str, default_server=''):
     """
     get which server we should run the command on from chat command args
+    :param default_server: used for test
     :param chat_args: the chopped chat
     :return chat command args without server specification and server_names as a list
     """
@@ -78,4 +79,6 @@ def get_server(chat_args: str):
 
     # if the code above didn't return, it means there is no server specification
     # so the command should be executed in default server
-    return chat_args, [DEFAULT_SERVER]
+    if not default_server:
+        default_server = DEFAULT_SERVER
+    return chat_args, [default_server]
