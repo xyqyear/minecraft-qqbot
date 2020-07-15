@@ -23,7 +23,7 @@
     first, permission_manager should be imported from plugin.mc, 
     and permissions needed for the plugin should be registered by:
         
-        permission_manager("permission.subpermission")
+        permission_manager.register("permission.subpermission")
     
     then, get_command and parse_response function should be provided by the module
     
