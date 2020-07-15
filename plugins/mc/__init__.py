@@ -41,7 +41,7 @@ for command in commands.keys():
                 await session.send(commands[chat_command].parse_response(permission, response))
             # could be used for no permission exception
             else:
-                await session.send('you have no permission to run this command')
+                await session.send('You have no permission to run this command.')
 
 
 def get_id(session):
