@@ -1,11 +1,11 @@
 from plugins.mc.permissions import permission_manager
 import re
 
-permission_manager.register('ping')
+permission_manager.register('list')
 
 
 def get_command(session, args):
-    return 'list', 'ping'
+    return 'list', 'list'
 
 
 def parse_response(permission, response):
