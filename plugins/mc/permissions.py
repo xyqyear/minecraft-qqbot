@@ -1,4 +1,4 @@
-from utils.coolq_utils import *
+from utils.coolq_utils import get_detail_type, get_group_id, get_sender_role, get_sender_id
 from config import SERVER_PROPERTIES, PERMISSIONS
 
 

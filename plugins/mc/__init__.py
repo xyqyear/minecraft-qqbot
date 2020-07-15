@@ -1,13 +1,13 @@
 import re
 
-from nonebot import on_command
+from nonebot import on_command, CommandSession
 from config import SERVER_PROPERTIES, DEFAULT_SERVER
 from mcrcon import MCRcon
 
 from plugins.mc.permissions import permission_manager
 from plugins.mc import command_list, command_whitelist, command_restart, \
     command_ban, command_unban, command_banlist
-from utils.coolq_utils import *
+from utils.coolq_utils import get_detail_type, get_sender_id, get_discuss_id
 
 # registering the commands
 # get_command: (session, args) -> (mc_command, permission)
