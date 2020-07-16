@@ -1,4 +1,5 @@
 import re
+import inspect
 
 from nonebot import on_command, CommandSession
 from config import SERVER_PROPERTIES, DEFAULT_SERVER
@@ -29,7 +30,16 @@ for command in commands.keys():
     async def _(session: CommandSession):
         chat_command = session.cmd.name[0]
         chat_args, server_names = get_server(session.current_arg_text.strip())
-        mc_command, permission = commands[chat_command].get_command(session, chat_args)
+        if inspect.iscoroutinefunction(commands[chat_command].get_command):
+            mc_command, permission = await commands[chat_command].get_command(session, chat_args)
+        else:
+            mc_command, permission = commands[chat_command].get_command(session, chat_args)
+
+        # if mc_command is empty, it means permission string is an error string
+        if not mc_command:
+            if permission:
+                await session.send(permission)
+            return
 
         for server_name in server_names:
             # permission string returned does not include server name
