@@ -3,10 +3,11 @@ import aiofiles
 
 from aiofiles import os as async_os
 
-file_locks = {}
+file_locks = dict()
+file_pointer = dict()
 
 
-async def write_file(filename: str, file_content: str):
+async def async_write_file(filename: str, file_content: str):
     if filename not in file_locks:
         file_locks[filename] = False
     if not file_locks[filename]:
@@ -16,15 +17,17 @@ async def write_file(filename: str, file_content: str):
         file_locks[filename] = False
     else:
         await asyncio.sleep(0.01)
-        await write_file(filename, file_content)
+        await async_write_file(filename, file_content)
 
 
-async def read_file(filename: str):
+async def async_read_file(filename: str, seek=0, size=-1) -> str:
     async with aiofiles.open(filename) as file:
-        return await file.read()
+        if seek:
+            await file.seek(seek)
+        return await file.read(size)
 
 
-async def async_file_exist(filename: str):
+async def async_file_exist(filename: str) -> bool:
     try:
         async with aiofiles.open(filename) as f:
             pass
@@ -33,5 +36,22 @@ async def async_file_exist(filename: str):
     return True
 
 
-async def async_file_size(filename: str):
-    return (await async_os.stat('app.c')).st_size
+async def async_file_size(filename: str) -> int:
+    return (await async_os.stat(filename)).st_size
+
+
+async def async_get_new_content(filename: str) -> str:
+    file_size = await async_file_size(filename)
+    if filename not in file_pointer:
+        file_pointer[filename] = file_size
+        return ''
+
+    last_pointer_position = file_pointer[filename]
+    if last_pointer_position == file_size:
+        return ''
+    file_pointer[filename] = file_size
+
+    if file_size < last_pointer_position:
+        return await async_read_file(filename)
+    else:
+        return await async_read_file(filename, last_pointer_position, file_size - last_pointer_position)
