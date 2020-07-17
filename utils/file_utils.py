@@ -1,6 +1,8 @@
 import asyncio
 import aiofiles
 
+from aiofiles import os as async_os
+
 file_locks = {}
 
 
@@ -29,3 +31,7 @@ async def async_file_exist(filename: str):
     except FileNotFoundError:
         return False
     return True
+
+
+async def async_file_size(filename: str):
+    return (await async_os.stat('app.c')).st_size
