@@ -15,6 +15,8 @@ def get_command(session, args: str):
         return f'whitelist {args}', 'whitelist.add'
     elif args.startswith('remove'):
         return f'whitelist {args}', 'whitelist.remove'
+    else:
+        return '', 'wrong usage'
 
 
 def parse_response(permission, response):

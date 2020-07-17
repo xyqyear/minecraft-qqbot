@@ -30,6 +30,8 @@
     get_command function receives *session: CommandSession* and *args: str*, 
     returns (*minecraft command: str*, *permission: str*)
     
+    get_command function could be async or not async.
+    
     ***the parameters used bellow may be changed in the future***
     
     parse_response function receives *permission: str* and *response: str*, 
@@ -37,5 +39,3 @@
     
     finally, in \_\_init__.py file in plugins.mc, the module you created should be 
     imported and added to commands: dict
-    
-    additionally, a **useless** decorator is provided if you don't want session parameter to be passed in.

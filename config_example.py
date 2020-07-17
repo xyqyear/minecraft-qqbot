@@ -10,6 +10,10 @@ SERVER_RCON = {'servername1': {'address': 'address1', 'rcon_port': 25575, 'rcon_
 
 DEFAULT_SERVER = 'servername1'
 
+COMMAND_SAY_BINDINGS = {
+    12345679: 'uuid'
+}
+
 PERMISSIONS = {'group':
                    {12345678:
                         {'default':
