@@ -1,5 +1,6 @@
 from plugins.mc.permissions import PermissionManager
 import nonebot
+import pytest
 
 
 def test_register():
@@ -116,7 +117,8 @@ def get_dummy_private_session(sender_id):
                                                           privileged=False))
 
 
-def test_permission_validate():
+@pytest.mark.asyncio
+async def test_permission_validate():
     permission_manager = PermissionManager()
     permission_manager.user_permissions = {
         'group': {1111: {'default': {'vanilla.ping', 'vanilla.whitelist.list', 'gtnh.ping'},
