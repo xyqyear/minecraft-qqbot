@@ -1,5 +1,7 @@
 ## MC-QQbot
 
+***this is solely a project for me to practice python and learn asyncio***
+
 ***don't use it, unless you want to use a piece of shit***
 
 ***the doc bellow is solely used to prevent me from forgetting things and make the repository looks better***
@@ -20,10 +22,10 @@
         
 - mc command modules
     
-    first, permission_manager should be imported from plugin.mc, 
-    and permissions needed for the plugin should be registered by:
+    first, you need to declare a tuple called permissions, and add permissions the 
+    module might need to the tuple.
         
-        permission_manager.register("permission.subpermission")
+        permissions = ('ban', )
     
     then, get_command and parse_response function should be provided by the module
     
