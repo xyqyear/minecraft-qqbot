@@ -1,16 +1,5 @@
 import re
 from mcrcon import MCRcon
-from utils.coolq_utils import get_detail_type, get_sender_id, get_discuss_id
-
-
-def get_id(session):
-    """get sender id from the session"""
-    if get_detail_type(session) == 'private':
-        return get_sender_id(session)
-    elif get_detail_type(session) == 'group':
-        return get_sender_id(session)
-    elif get_detail_type(session) == 'discuss':
-        return get_discuss_id(session)
 
 
 async def send_command(server_name, mc_command: str):
