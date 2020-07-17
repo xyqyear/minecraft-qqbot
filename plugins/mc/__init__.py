@@ -7,7 +7,7 @@ from mcrcon import MCRcon
 
 from plugins.mc.permissions import permission_manager
 from plugins.mc import command_list, command_whitelist, command_restart, \
-    command_ban, command_unban, command_banlist
+    command_ban, command_unban, command_banlist, command_say
 from utils.coolq_utils import get_detail_type, get_sender_id, get_discuss_id
 
 # registering the commands
@@ -19,7 +19,9 @@ commands = {'ping': command_list,
             'ban': command_ban,
             'unban': command_unban,
             'pardon': command_unban,
-            'banlist': command_banlist}
+            'banlist': command_banlist,
+            's': command_say,
+            'say': command_say}
 
 # permissions should be loaded after modules registered all the permissions
 permission_manager.load_user_permissions()
@@ -48,7 +50,9 @@ for command in commands.keys():
             # and parse the response from the server and send it to the source
             if permission_manager.validate(session, s_permission):
                 response = await send_command(server_name, mc_command)
-                await session.send(commands[chat_command].parse_response(permission, response))
+                parsed_response = commands[chat_command].parse_response(permission, response)
+                if parsed_response:
+                    await session.send(parsed_response)
             # could be used for no permission exception
             else:
                 await session.send('You have no permission to run this command.')

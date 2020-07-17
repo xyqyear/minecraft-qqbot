@@ -26,7 +26,7 @@ async def uuid2name(uuid: str, cache_file_name='', retry_count=5, timeout=5):
             try:
                 async with session.get(f'https://api.mojang.com/user/profiles/{uuid.replace("-", "")}/names',
                                        timeout=timeout) as response:
-                    name = (await response.json())[0]['name']
+                    name = (await response.json())[-1]['name']
                     name_cache_json[uuid] = name
                     await write_file(cache_file_name, json.dumps(name_cache_json))
                     return name
