@@ -1,4 +1,4 @@
-from mc_commands.list import parse_response
+from mc_commands.command_list import parse_response
 
 
 def test_parse_response():
