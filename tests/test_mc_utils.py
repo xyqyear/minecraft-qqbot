@@ -1,4 +1,4 @@
-from plugins.mc import get_server
+from plugins.mc.utils import get_server
 
 
 def test_get_server():
