@@ -2,7 +2,6 @@ import re
 import inspect
 
 from nonebot import on_command, CommandSession
-from config import DEFAULT_SERVER
 from mcrcon import MCRcon
 
 from plugins.mc.permissions import permission_manager
