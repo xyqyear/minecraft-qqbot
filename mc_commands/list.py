@@ -1,7 +1,5 @@
-from plugins.mc.permissions import permission_manager
 import re
-
-permission_manager.register('list')
+permissions = ('list', )
 
 
 def get_command(session, args):

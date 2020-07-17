@@ -1,8 +1,7 @@
-from plugins.mc.permissions import permission_manager
 from utils.coolq_utils import get_sender_id
 from utils.request_utils import uuid2name
 
-permission_manager.register('say')
+permissions = ('say', )
 
 
 async def get_command(session, args: str, command_say_bindings=None):

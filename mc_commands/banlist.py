@@ -1,6 +1,4 @@
-from plugins.mc.permissions import permission_manager
-
-permission_manager.register('banlist')
+permissions = ('banlist', )
 
 
 def get_command(session, args):
