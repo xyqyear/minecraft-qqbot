@@ -1,4 +1,4 @@
-from plugins.mc.permissions import PermissionManager
+from permissions import PermissionManager
 import nonebot
 import pytest
 

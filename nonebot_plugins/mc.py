@@ -1,8 +1,8 @@
 import inspect
 from nonebot import on_command, CommandSession
 
-from nonebot_plugins.mc.permissions import permission_manager
-from nonebot_plugins.mc.utils import send_command, get_server
+from permissions import permission_manager
+from utils.mc_utils import send_command, get_server
 from mc_commands import list, whitelist, restart, ban, unban, banlist, say
 
 commands = {'ping': list,
