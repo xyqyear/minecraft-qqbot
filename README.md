@@ -1,5 +1,7 @@
 ## MC-QQbot
 
+![](https://github.com/xyqyear/minecraft-qqbot/workflows/test/badge.svg)
+
 ***this is solely a project for me to practice python and learn asyncio***
 
 ***don't use it, unless you want to use a piece of shit***
