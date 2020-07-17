@@ -1,5 +1,4 @@
 from utils.coolq_utils import get_detail_type, get_group_id, get_sender_role, get_sender_id
-from config import SERVER_PROPERTIES, PERMISSIONS
 
 
 class PermissionManager:
@@ -11,7 +10,9 @@ class PermissionManager:
 
     def load_user_permissions(self, config_user_permissions=None, server_names=None, all_permissions=None):
         """load permission from config file or arguments"""
-        config_user_permissions = PERMISSIONS if not config_user_permissions else config_user_permissions
+        if not config_user_permissions:
+            from config import PERMISSIONS
+            config_user_permissions = PERMISSIONS
 
         # handling group permissions
         self.user_permissions['group'] = dict()
@@ -34,6 +35,7 @@ class PermissionManager:
         """ handle asterisks in perm string like 'whitelist.*' """
         # used for test
         if not server_names:
+            from config import SERVER_PROPERTIES
             server_names = (i for i in SERVER_PROPERTIES.keys())
         if not all_permissions:
             all_permissions = self.all_permissions
