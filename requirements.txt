@@ -1,4 +1,7 @@
 nonebot
+nonebot[scheduler]
+aiocqhttp
+ujson
 mcrcon
 aiohttp
 aiofiles
