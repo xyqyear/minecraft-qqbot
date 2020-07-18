@@ -1,6 +1,8 @@
 import re
 from mcrcon import MCRcon
 
+log_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*)> (.*)')
+
 
 async def send_command(server_name, mc_command: str):
     """send command to the server specified"""
@@ -36,3 +38,9 @@ def get_server(chat_args: str, default_server='', server_properties=None):
     # if the code above didn't return, it means there is no server specification
     # so the command should be executed in default server
     return chat_args, [default_server]
+
+
+def parse_logs(logs, startswith=',s '):
+    for name, message in log_pattern.findall(logs):
+        if message.startswith(startswith):
+            yield name, message[len(startswith):]
