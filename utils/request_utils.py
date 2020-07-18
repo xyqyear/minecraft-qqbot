@@ -1,6 +1,6 @@
 import aiohttp
 import asyncio
-import json
+import ujson
 
 from utils.file_utils import async_write_file, async_read_file, async_file_exist
 
@@ -13,7 +13,7 @@ async def uuid2name(uuid: str, cache_file_name='', retry_count=5, timeout=5):
     # if cache file exist
     if await async_file_exist(cache_file_name):
         name_cache = await async_read_file(cache_file_name)
-        name_cache_json = json.loads(name_cache)
+        name_cache_json = ujson.loads(name_cache)
         if uuid in name_cache_json:
             return name_cache_json[uuid]
     else:
@@ -26,7 +26,7 @@ async def uuid2name(uuid: str, cache_file_name='', retry_count=5, timeout=5):
                                        timeout=timeout) as response:
                     name = (await response.json())[-1]['name']
                     name_cache_json[uuid] = name
-                    await async_write_file(cache_file_name, json.dumps(name_cache_json))
+                    await async_write_file(cache_file_name, ujson.dumps(name_cache_json))
                     return name
 
             except asyncio.TimeoutError:

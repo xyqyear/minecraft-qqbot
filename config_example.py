@@ -10,6 +10,10 @@ SERVER_RCON = {'servername1': {'address': 'address1', 'rcon_port': 25575, 'rcon_
 
 DEFAULT_SERVER = 'servername1'
 
+LOG_PATH = '/path/to/log/file'
+
+DEFAULT_GROUP = 12345678
+
 COMMAND_SAY_BINDINGS = {
     12345679: 'uuid'
 }

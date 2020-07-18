@@ -40,7 +40,11 @@ def get_server(chat_args: str, default_server='', server_properties=None):
     return chat_args, [default_server]
 
 
-def parse_logs(logs, startswith=',s '):
+def parse_logs(logs, startswith=None):
+    if startswith is None:
+        startswith = (r'\\', '、、')
     for name, message in log_pattern.findall(logs):
-        if message.startswith(startswith):
-            yield name, message[len(startswith):]
+        for start in startswith:
+            if message.startswith(start):
+                yield name, message[len(start):]
+                break
