@@ -1,7 +1,7 @@
 import nonebot
 from aiocqhttp.exceptions import Error as CQHttpError
 
-from config import DEFAULT_GROUP, LOG_PATH, DEFAULT_SERVER
+from bot_config import DEFAULT_GROUP, LOG_PATH, DEFAULT_SERVER
 from utils.file_utils import async_get_new_content
 from utils.mc_utils import parse_logs, send_command
 

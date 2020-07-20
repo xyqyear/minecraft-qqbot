@@ -6,7 +6,7 @@ permissions = ('say', )
 
 async def get_command(session, args: str, command_say_bindings=None):
     if not command_say_bindings:
-        from config import COMMAND_SAY_BINDINGS
+        from bot_config import COMMAND_SAY_BINDINGS
         command_say_bindings = COMMAND_SAY_BINDINGS
 
     sender_id = get_sender_id(session)

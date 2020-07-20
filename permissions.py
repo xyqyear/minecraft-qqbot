@@ -11,7 +11,7 @@ class PermissionManager:
     def load_user_permissions(self, config_user_permissions=None, server_names=None, all_permissions=None):
         """load permission from config file or arguments"""
         if not config_user_permissions:
-            from config import PERMISSIONS
+            from bot_config import PERMISSIONS
             config_user_permissions = PERMISSIONS
 
         # handling group permissions
@@ -35,7 +35,7 @@ class PermissionManager:
         """ handle asterisks in perm string like 'whitelist.*' """
         # used for test
         if not server_names:
-            from config import SERVER_PROPERTIES
+            from bot_config import SERVER_PROPERTIES
             server_names = (i for i in SERVER_PROPERTIES.keys())
         if not all_permissions:
             all_permissions = self.all_permissions
