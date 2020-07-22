@@ -3,7 +3,7 @@ commands = ('whitelist', )
 
 
 def get_command(session, args: str):
-    if args.startswith('list '):
+    if args == 'list':
         return 'whitelist list', 'whitelist.list'
     elif args == 'reload':
         return 'whitelist reload', 'whitelist.reload'
