@@ -1,14 +1,14 @@
 import nonebot
 from aiocqhttp.exceptions import Error as CQHttpError
 
-from bot_config import DEFAULT_GROUP, LOG_PATH, DEFAULT_SERVER
+from config_manager import config
 from utils.file_utils import async_get_new_content
 from utils.mc_utils import parse_logs, send_command
 
 
 @nonebot.scheduler.scheduled_job('interval', seconds=1)
 async def _():
-    new_logs = await async_get_new_content(LOG_PATH)
+    new_logs = await async_get_new_content(config.log_path)
     if not new_logs:
         return
 
@@ -20,7 +20,7 @@ async def _():
     for name, message in new_messages:
         print(f'<{name}> {message}')
         try:
-            await bot.send_group_msg(group_id=DEFAULT_GROUP,
+            await bot.send_group_msg(group_id=config.default_group,
                                      message=f'<{name}> {message}')
         except CQHttpError:
-            await send_command(DEFAULT_SERVER, f'message "{message}" failed to send')
+            await send_command(config.default_server, f'message "{message}" failed to send')
