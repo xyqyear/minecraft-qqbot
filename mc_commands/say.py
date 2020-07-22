@@ -1,13 +1,13 @@
 from utils.coolq_utils import get_sender_id
 from utils.request_utils import uuid2name
+from config_manager import config
 
 permissions = ('say', )
 
 
 async def get_command(session, args: str, command_say_bindings=None):
     if not command_say_bindings:
-        from config import COMMAND_SAY_BINDINGS
-        command_say_bindings = COMMAND_SAY_BINDINGS
+        command_say_bindings = config.command_say_bindings
 
     sender_id = get_sender_id(session)
     if sender_id in command_say_bindings:

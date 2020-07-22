@@ -1,0 +1,47 @@
+server_properties:
+  vanilla:
+    address: 127.0.0.1
+    rcon_port: 25575
+    rcon_password: super-secret
+    aka:
+      - v
+
+default_server: vanilla
+
+log_path: /path/to/log/file
+
+default_group: 11111111
+
+command_say_bindings:
+  12345678:  b8c8679b-a0f2-468c-9b38-79d4b0f068ac
+
+
+permissions:
+  group:
+    11111111:
+      default:
+        - '*.list'
+        - 'vanilla.whitelist.list'
+        - 'vanilla.banlist'
+        - 'vanilla.say'
+      admin:
+        - 'vanilla.whitelist.*'
+        - 'vanilla.restart'
+        - 'vanilla.ban'
+        - 'vanilla.unban'
+
+    22222222:
+      default:
+        - '*.list'
+        - 'vanilla.whitelist.list'
+        - 'vanilla.banlist'
+        - 'vanilla.say'
+      admin:
+        - 'vanilla.whitelist.*'
+        - 'vanilla.restart'
+        - 'vanilla.ban'
+        - 'vanilla.unban'
+
+  'private':
+    33333333:
+      - '*'
