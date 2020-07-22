@@ -3,6 +3,7 @@ from utils.request_utils import uuid2name
 from config_manager import config
 
 permissions = ('say', )
+commands = ('say', 's')
 
 
 async def get_command(session, args: str, command_say_bindings=None):

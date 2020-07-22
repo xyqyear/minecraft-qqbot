@@ -1,4 +1,5 @@
 permissions = ('unban', )
+commands = ('unban', 'pardon', )
 
 
 def get_command(session, args: str):

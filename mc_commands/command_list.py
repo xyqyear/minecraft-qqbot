@@ -1,5 +1,6 @@
 import re
 permissions = ('list', )
+commands = ('list', 'ping', )
 
 
 def get_command(session, args):

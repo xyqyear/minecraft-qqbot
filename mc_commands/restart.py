@@ -1,4 +1,5 @@
 permissions = ('restart', )
+commands = ('restart', )
 
 
 def get_command(session, args):

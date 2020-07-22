@@ -1,20 +1,21 @@
+import os
 import inspect
+import importlib
 from nonebot import on_command, CommandSession
 
 from permissions import permission_manager
 from utils.mc_utils import send_command, get_server
-from mc_commands import command_list, whitelist, restart, ban, unban, banlist, say
 
-commands = {'ping': command_list,
-            'list': command_list,
-            'whitelist': whitelist,
-            'restart': restart,
-            'ban': ban,
-            'unban': unban,
-            'pardon': unban,
-            'banlist': banlist,
-            's': say,
-            'say': say}
+# loading commands from .py files
+commands = dict()
+
+for module_filename in os.listdir('mc_commands'):
+    if module_filename.endswith('.py'):
+        module_name = module_filename[:-3]
+        module = importlib.import_module(f'mc_commands.{module_name}')
+        for command_name in module.conmands:
+            commands[command_name] = module
+
 
 # registering permissions
 permissions = set()
@@ -26,6 +27,7 @@ for permission in permissions:
     permission_manager.register(permission)
 
 permission_manager.load_user_permissions()
+
 
 # binding commands
 for command in commands.keys():

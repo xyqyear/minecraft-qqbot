@@ -1,4 +1,5 @@
 permissions = ('whitelist.list', 'whitelist.reload', 'whitelist.add', 'whitelist.remove')
+commands = ('whitelist', )
 
 
 def get_command(session, args: str):

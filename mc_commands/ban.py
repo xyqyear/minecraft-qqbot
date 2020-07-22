@@ -1,4 +1,5 @@
 permissions = ('ban', )
+commands = ('ban', )
 
 
 def get_command(session, args: str):
