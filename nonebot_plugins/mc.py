@@ -13,7 +13,7 @@ for module_filename in os.listdir('mc_commands'):
     if module_filename.endswith('.py'):
         module_name = module_filename[:-3]
         module = importlib.import_module(f'mc_commands.{module_name}')
-        for command_name in module.conmands:
+        for command_name in module.commands:
             commands[command_name] = module
 
 
