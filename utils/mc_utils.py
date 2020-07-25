@@ -1,5 +1,5 @@
 import re
-from mcrcon import MCRcon
+from asyncrcon import AsyncRCON
 from config_manager import config
 
 log_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*)> (.*)')
@@ -8,10 +8,22 @@ log_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*)> (.*
 async def send_command(server_name, mc_command: str):
     """send command to the server specified"""
     server_properties = config.server_properties
-    with MCRcon(server_properties[server_name]['address'],
-                port=server_properties[server_name]['rcon_port'],
-                password=server_properties[server_name]['rcon_password']) as mcr:
-        return mcr.command(mc_command)
+
+    rcon = AsyncRCON(f'{server_properties[server_name]["address"]}:{server_properties[server_name]["rcon_port"]}',
+                     server_properties[server_name]['rcon_password'])
+
+    try:
+        await rcon.open_connection()
+    except OSError:
+        return 'Failed to connect to the server'
+
+    try:
+        response = await rcon.command(mc_command)
+    except OSError:
+        return 'Failed to connect to the server'
+
+    rcon.close()
+    return response
 
 
 def get_server(chat_args: str, default_server='', server_properties=None):

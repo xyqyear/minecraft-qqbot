@@ -42,6 +42,6 @@ permissions:
         - 'vanilla.ban'
         - 'vanilla.unban'
 
-  'private':
+  private:
     33333333:
       - '*'
