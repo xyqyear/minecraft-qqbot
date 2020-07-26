@@ -6,57 +6,44 @@ import pytest
 def test_register():
     permission_manager = PermissionManager()
     permission_manager.register('ping')
-    permission_manager.register('whitelist')
     permission_manager.register('whitelist.list')
     permission_manager.register('whitelist.reload')
     permission_manager.register('perm.node1.node2')
     permission_manager.register('perm.node2')
 
-    permission_dict = {'ping': dict(),
-                       'whitelist': {'list': dict(), 'reload': dict()},
-                       'perm': {'node1': {'node2': {}}, 'node2': {}}}
+    permission_dict = {'ping', 'whitelist.list', 'whitelist.reload', 'perm.node1.node2', 'perm.node2'}
 
     assert permission_manager.all_permissions == permission_dict
 
 
 def test_expand_permission():
     permission_manager = PermissionManager()
-    permission_manager.all_permissions = {'ping': dict(),
-                                          'whitelist': {'list': dict(), 'reload': dict()}}
+    permission_manager.all_permissions = {'ping', 'whitelist.list', 'whitelist.reload'}
+    server_names = ('vanilla', 'gtnh')
 
-    assert permission_manager.expand_permission('*', ('vanilla', 'gtnh')) == {'vanilla.whitelist.reload',
+    assert permission_manager.expand_permission('*', server_names) == {'vanilla.whitelist.reload',
                                                                               'gtnh.whitelist.list',
                                                                               'vanilla.ping',
                                                                               'vanilla.whitelist.list',
                                                                               'gtnh.whitelist.reload',
                                                                               'gtnh.ping'}
 
-    assert permission_manager.expand_permission('*.whitelist', ('vanilla', 'gtnh')) == {'vanilla.whitelist.reload',
-                                                                                        'vanilla.whitelist.list',
-                                                                                        'gtnh.whitelist.reload',
-                                                                                        'gtnh.whitelist.list'}
-
-    assert permission_manager.expand_permission('*.whitelist.*', ('vanilla', 'gtnh')) == {'vanilla.whitelist.reload',
+    assert permission_manager.expand_permission('*.whitelist.*', server_names) == {'vanilla.whitelist.reload',
                                                                                           'vanilla.whitelist.list',
                                                                                           'gtnh.whitelist.reload',
                                                                                           'gtnh.whitelist.list'}
 
-    assert permission_manager.expand_permission('vanilla.whitelist', ('vanilla', 'gtnh')) == {
+    assert permission_manager.expand_permission('vanilla.whitelist.*', server_names) == {
         'vanilla.whitelist.reload',
         'vanilla.whitelist.list'}
 
-    assert permission_manager.expand_permission('vanilla.whitelist.*', ('vanilla', 'gtnh')) == {
-        'vanilla.whitelist.reload',
-        'vanilla.whitelist.list'}
-
-    assert permission_manager.expand_permission('vanilla.whitelist.reload', ('vanilla', 'gtnh')) == {
+    assert permission_manager.expand_permission('vanilla.whitelist.reload', server_names) == {
         'vanilla.whitelist.reload'}
 
 
 def test_load_user_permission():
     permission_manager = PermissionManager()
-    permission_manager.all_permissions = {'ping': dict(),
-                                          'whitelist': {'list': dict(), 'reload': dict()}}
+    permission_manager.all_permissions = {'ping', 'whitelist.list', 'whitelist.reload'}
 
     permissions = {'group':
                        {1111:
@@ -131,6 +118,12 @@ async def test_permission_validate():
     assert permission_manager.validate(get_dummy_group_session(1111, 'member', 2345), 'gtnh.ping')
     assert not permission_manager.validate(get_dummy_group_session(1234, 'member', 2345), 'vanilla.ping')
     assert permission_manager.validate(get_dummy_group_session(1111, 'member', 2345), 'vanilla.ping')
+
+    assert permission_manager.validate(get_dummy_group_session(1111, 'admin', 2345), 'vanilla.ping')
+    assert permission_manager.validate(get_dummy_group_session(1111, 'admin', 2345), 'vanilla.whitelist.reload')
+    assert permission_manager.validate(get_dummy_group_session(1111, 'admin', 2345), 'gtnh.ping')
+    assert not permission_manager.validate(get_dummy_group_session(1234, 'admin', 2345), 'vanilla.ping')
+    assert permission_manager.validate(get_dummy_group_session(1111, 'admin', 2345), 'vanilla.ping')
 
     assert not permission_manager.validate(get_dummy_group_session(2222, 'member', 2345), 'vanilla.ping')
 
