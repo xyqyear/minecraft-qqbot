@@ -1,8 +1,9 @@
 import os
 import inspect
 import importlib
-from nonebot import on_command, CommandSession
 
+from adapter import bot
+from message import Message
 from permissions import permission_manager
 from utils.mc_utils import send_command, get_server
 
@@ -31,19 +32,19 @@ permission_manager.load_user_permissions()
 
 # binding commands
 for command in commands.keys():
-    @on_command(command,  only_to_me=False)
-    async def _(session: CommandSession):
-        chat_command = session.cmd.name[0]
-        chat_args, server_names = get_server(session.current_arg_text.strip())
+    @bot.on_command(command)
+    async def _(message: Message):
+        chat_command = message.command
+        chat_args, server_names = get_server(message.args)
         if inspect.iscoroutinefunction(commands[chat_command].get_command):
-            mc_command, permission = await commands[chat_command].get_command(session, chat_args)
+            mc_command, permission = await commands[chat_command].get_command(message)
         else:
-            mc_command, permission = commands[chat_command].get_command(session, chat_args)
+            mc_command, permission = commands[chat_command].get_command(message)
 
         # if mc_command is empty, it means permission string is an error string
         if not mc_command:
             if permission:
-                await session.send(permission)
+                await message.send_back(permission)
             return
 
         for server_name in server_names:
@@ -51,11 +52,11 @@ for command in commands.keys():
             s_permission = f'{server_name}.{permission}'
             # if the person has the required permission, then perform the command on corresponding server
             # and parse the response from the server and send it to the source
-            if permission_manager.validate(session, s_permission):
+            if permission_manager.validate(message, s_permission):
                 response = await send_command(server_name, mc_command)
                 parsed_response = commands[chat_command].parse_response(permission, response)
                 if parsed_response:
-                    await session.send(parsed_response)
+                    await message.send_back(parsed_response)
             # could be used for no permission exception
             else:
-                await session.send('You have no permission to run this command.')
+                await message.send_back('You have no permission to run this command.')

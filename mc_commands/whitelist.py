@@ -2,15 +2,15 @@ permissions = ('whitelist.list', 'whitelist.reload', 'whitelist.add', 'whitelist
 commands = ('whitelist', )
 
 
-def get_command(session, args: str):
-    if args == 'list':
+def get_command(message):
+    if message.args == 'list':
         return 'whitelist list', 'whitelist.list'
-    elif args == 'reload':
+    elif message.args == 'reload':
         return 'whitelist reload', 'whitelist.reload'
-    elif args.startswith('add '):
-        return f'whitelist {args}', 'whitelist.add'
-    elif args.startswith('remove '):
-        return f'whitelist {args}', 'whitelist.remove'
+    elif message.args.startswith('add '):
+        return f'whitelist {message.args}', 'whitelist.add'
+    elif message.args.startswith('remove '):
+        return f'whitelist {message.args}', 'whitelist.remove'
     else:
         return '', 'wrong usage'
 

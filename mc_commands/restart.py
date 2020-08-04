@@ -2,7 +2,7 @@ permissions = ('restart', )
 commands = ('restart', )
 
 
-def get_command(session, args):
+def get_command(message):
     return 'stop', 'restart'
 
 

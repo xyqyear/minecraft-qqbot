@@ -1,5 +1,5 @@
-from utils.coolq_utils import get_detail_type, get_group_id, get_sender_role, get_sender_id
 from config_manager import config
+from message import Message
 
 
 class PermissionManager:
@@ -58,25 +58,25 @@ class PermissionManager:
         return {f'{server_name}.{permission}' for server_name in needed_server for permission in needed_permission}
 
     # permission here includes server name
-    def validate(self, session, permission: str):
+    def validate(self, message: Message, permission: str):
         """
         validates user permission
-        :param session: CommandSession got from nonebot
+        :param message: message received
         :param permission: permission string including server name, e.g. 'vanilla.ping'
         :return: if the invoker of the session has the permission, return True, else False
         """
-        detail_type = get_detail_type(session)
+        detail_type = message.type
         if detail_type == 'group':
-            group_id = get_group_id(session)
+            group_id = message.group_id
             if group_id in self.user_permissions['group']:
                 if permission in self.user_permissions['group'][group_id]['default']:
                     return True
-                elif get_sender_role(session) in ('admin', 'owner') and \
+                elif message.sender_role in ('admin', 'owner') and \
                         permission in self.user_permissions[detail_type][group_id]['admin']:
                     return True
 
         else:
-            sender_id = get_sender_id(session)
+            sender_id = message.sender_id
             if sender_id in self.user_permissions['private']:
                 if permission in self.user_permissions['private'][sender_id]:
                     return True

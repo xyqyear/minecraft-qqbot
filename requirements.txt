@@ -1,9 +1,6 @@
-nonebot
-nonebot[scheduler]
-aiocqhttp
 ujson
-mcrcon
 aiohttp
 aiofiles
+apscheduler
 ruamel.yaml
 asyncrcon

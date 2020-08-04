@@ -1,4 +1,3 @@
-from utils.coolq_utils import get_sender_id
 from utils.request_utils import uuid2name
 from config_manager import config
 
@@ -6,16 +5,15 @@ permissions = ('say', )
 commands = ('say', 's')
 
 
-async def get_command(session, args: str, command_say_bindings=None):
+async def get_command(message, command_say_bindings=None):
     if not command_say_bindings:
         command_say_bindings = config.command_say_bindings
 
-    sender_id = get_sender_id(session)
-    if sender_id in command_say_bindings:
-        sender_uuid = command_say_bindings[sender_id]
+    if message.sender_id in command_say_bindings:
+        sender_uuid = command_say_bindings[message.sender_id]
         player_name = await uuid2name(sender_uuid)
 
-        return f'tellraw @a {{"text": "*<{player_name}> {args}", "color": "yellow"}}', 'say'
+        return f'tellraw @a {{"text": "*<{player_name}> {message.args}", "color": "yellow"}}', 'say'
     else:
         return '', 'You have no in game character bound'
 

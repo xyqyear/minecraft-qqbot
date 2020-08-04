@@ -31,6 +31,30 @@ class ConfigManager:
     save = save_to_file
 
     @property
+    def bot_host(self):
+        return self.config['bot_host']
+
+    @bot_host.setter
+    def bot_host(self, bot_host):
+        self.config['bot_host'] = bot_host
+
+    @property
+    def bot_authKey(self):
+        return self.config['bot_authKey']
+
+    @bot_authKey.setter
+    def bot_authKey(self, bot_authKey):
+        self.config['bot_authKey'] = bot_authKey
+
+    @property
+    def bot_account(self):
+        return self.config['bot_account']
+
+    @bot_account.setter
+    def bot_account(self, bot_account):
+        self.config['bot_account'] = bot_account
+
+    @property
     def server_properties(self):
         return self.config['server_properties']
 
