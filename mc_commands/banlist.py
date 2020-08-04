@@ -2,7 +2,7 @@ permissions = ('banlist', )
 commands = ('banlist', )
 
 
-def get_command(session, args):
+def get_command(message):
     return 'banlist', 'banlist'
 
 

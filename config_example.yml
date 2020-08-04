@@ -1,3 +1,7 @@
+bot_host: http://localhost:12345
+bot_authKey: superSecretAuthKey
+bot_account: 12345678
+
 server_properties:
   vanilla:
     address: 127.0.0.1

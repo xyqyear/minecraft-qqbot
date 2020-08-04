@@ -1,18 +1,12 @@
-import nonebot
-from os import path
-
-import bot_config
 from config_manager import config
+from adapter import bot
+import logging
 
 if __name__ == '__main__':
-    # config init
     config.load()
+    bot.init()
+    logging.getLogger('apscheduler.executors.default').setLevel(logging.WARNING)
 
-    # nonebot init
-    nonebot.init(bot_config)
-    nonebot.load_plugins(
-        path.join(path.dirname(__file__), 'nonebot_plugins'),
-        'nonebot_plugins'
-    )
+    from bot_plugins import mc, server2group
 
-    nonebot.run()
+    bot.launch_blocking()

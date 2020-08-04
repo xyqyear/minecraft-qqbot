@@ -3,7 +3,7 @@ permissions = ('list', )
 commands = ('list', 'ping', )
 
 
-def get_command(session, args):
+def get_command(message):
     return 'list', 'list'
 
 
