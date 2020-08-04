@@ -4,3 +4,4 @@ aiofiles
 apscheduler
 ruamel.yaml
 asyncrcon
+graia-application-mirai
