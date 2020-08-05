@@ -15,7 +15,6 @@ async def _():
         return
 
     for name, message in new_messages:
-        print(f'<{name}> {message}')
         try:
             await bot.send_group_message(config.default_group, f'<{name}> {message}')
         except:

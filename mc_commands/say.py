@@ -12,8 +12,9 @@ async def get_command(message, command_say_bindings=None):
     if message.sender_id in command_say_bindings:
         sender_uuid = command_say_bindings[message.sender_id]
         player_name = await uuid2name(sender_uuid)
+        escaped_message = message.args.replace('\\', '\\\\').replace('"', '\\"')
 
-        return f'tellraw @a {{"text": "*<{player_name}> {message.args}", "color": "yellow"}}', 'say'
+        return f'tellraw @a {{"text": "*<{player_name}> {escaped_message}", "color": "yellow"}}', 'say'
     else:
         return '', 'You have no in game character bound'
 
