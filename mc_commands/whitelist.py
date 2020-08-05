@@ -2,15 +2,15 @@ permissions = ('whitelist.list', 'whitelist.reload', 'whitelist.add', 'whitelist
 commands = ('whitelist', )
 
 
-def get_command(message):
+def get_command(message, chat_args):
     if message.args == 'list':
         return 'whitelist list', 'whitelist.list'
     elif message.args == 'reload':
         return 'whitelist reload', 'whitelist.reload'
     elif message.args.startswith('add '):
-        return f'whitelist {message.args}', 'whitelist.add'
+        return f'whitelist {chat_args}', 'whitelist.add'
     elif message.args.startswith('remove '):
-        return f'whitelist {message.args}', 'whitelist.remove'
+        return f'whitelist {chat_args}', 'whitelist.remove'
     else:
         return '', 'wrong usage'
 

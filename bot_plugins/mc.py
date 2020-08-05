@@ -37,9 +37,9 @@ for command in commands.keys():
         chat_command = message.command
         chat_args, server_names = get_server(message)
         if inspect.iscoroutinefunction(commands[chat_command].get_command):
-            mc_command, permission = await commands[chat_command].get_command(message)
+            mc_command, permission = await commands[chat_command].get_command(message, chat_args)
         else:
-            mc_command, permission = commands[chat_command].get_command(message)
+            mc_command, permission = commands[chat_command].get_command(message, chat_args)
 
         # if mc_command is empty, it means permission string is an error string
         if not mc_command:
@@ -60,7 +60,7 @@ for command in commands.keys():
                     continue
                 parsed_response = commands[chat_command].parse_response(permission, response)
                 if parsed_response:
-                    await message.send_back(parsed_response)
+                    await message.send_back(f'[{server_name}] {parsed_response}')
             # could be used for no permission exception
             else:
                 await message.send_back('You have no permission to run this command.')

@@ -81,8 +81,8 @@ def get_server(message: Message, private_properties: dict = None, group_properti
         if 'aka' in server_properties:
             name_pool += server_properties['aka']
         for aka_name in name_pool:
-            if message.args.endswith(f'@{aka_name}'):
-                return re.sub(rf'@{aka_name}$', '', message.args).strip(), [server_name]
+            if message.args.endswith(f'/{aka_name}'):
+                return re.sub(rf'/{aka_name}$', '', message.args).strip(), [server_name]
 
     # if the code above didn't return, it means there is no server specification
     # so the command should be executed in default server

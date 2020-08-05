@@ -10,11 +10,11 @@ async def _():
         if server_property['server2group']['enable']:
             new_logs = await async_get_new_content(server_property['server2group']['log_path'])
             if not new_logs:
-                return
+                continue
 
             new_messages = parse_logs(new_logs)
             if not new_messages:
-                return
+                continue
 
             for name, message in new_messages:
                 try:

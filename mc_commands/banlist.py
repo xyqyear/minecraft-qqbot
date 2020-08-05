@@ -2,7 +2,7 @@ permissions = ('banlist', )
 commands = ('banlist', )
 
 
-def get_command(message):
+def get_command(message, chat_args):
     return 'banlist', 'banlist'
 
 
