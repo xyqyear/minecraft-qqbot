@@ -12,17 +12,19 @@
 
 - commands should be like
     
-        /command argument0 argument1 @server
+        /command argument0 argument1 /server
         # or
-        /command argument0 argument1 @serveraka
+        /command argument0 argument1 /serveraka
         
         # e.g.
-        /whitelist add xyqyear @vanilla
-        /ban xyqyear @v
+        /whitelist add xyqyear /vanilla
+        /ban xyqyear /v
         
-        if there is no @ specification, then send to default server
+        if there is no server specification, then send to default server
         
 - mc command modules
+    
+    ***TODO: need to update***
     
     first, you need to declare a tuple called permissions, and add permissions the 
     module might need to the tuple.
