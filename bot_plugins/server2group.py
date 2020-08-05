@@ -6,16 +6,18 @@ from adapter import bot
 
 @bot.scheduler.scheduled_job('interval', seconds=1)
 async def _():
-    new_logs = await async_get_new_content(config.log_path)
-    if not new_logs:
-        return
+    for server_name, server_property in config.server_properties.keys():
+        if server_property['server2group']['enable']:
+            new_logs = await async_get_new_content(server_property['server2group']['log_path'])
+            if not new_logs:
+                return
 
-    new_messages = parse_logs(new_logs)
-    if not new_messages:
-        return
+            new_messages = parse_logs(new_logs)
+            if not new_messages:
+                return
 
-    for name, message in new_messages:
-        try:
-            await bot.send_group_message(config.default_group, f'<{name}> {message}')
-        except:
-            await send_command(config.default_server, f'say message "{message}" failed to send')
+            for name, message in new_messages:
+                try:
+                    await bot.send_group_message(server_property['server2group']['default_group'], f'<{name}> {message}')
+                except:
+                    await send_command(server_name, f'say message "{message}" failed to send')
