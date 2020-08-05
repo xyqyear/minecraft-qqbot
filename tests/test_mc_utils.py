@@ -15,15 +15,15 @@ def test_get_server():
                       private_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['vanilla'])
-    assert get_server(get_dummy_private_message(11111111, '/whitelist list @v'),
+    assert get_server(get_dummy_private_message(11111111, '/whitelist list /v'),
                       private_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['vanilla'])
-    assert get_server(get_dummy_private_message(11111111, '/whitelist list @vanilla'),
+    assert get_server(get_dummy_private_message(11111111, '/whitelist list /vanilla'),
                       private_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['vanilla'])
-    assert get_server(get_dummy_private_message(11111111, '/whitelist list @g'),
+    assert get_server(get_dummy_private_message(11111111, '/whitelist list /g'),
                       private_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['gtnh'])
@@ -36,7 +36,7 @@ def test_get_server():
                                   22222222: {'default_server': 'gtnh'},
                                   33333333: {'default_server': 'vanilla'}}
 
-    assert get_server(get_dummy_private_message(33333333, '/whitelist list @g'),
+    assert get_server(get_dummy_private_message(33333333, '/whitelist list /g'),
                       private_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['gtnh'])
@@ -48,15 +48,15 @@ def test_get_server():
                       group_properties=group_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['vanilla'])
-    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list @v'),
+    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list /v'),
                       group_properties=group_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['vanilla'])
-    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list @vanilla'),
+    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list /vanilla'),
                       group_properties=group_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['vanilla'])
-    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list @g'),
+    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list /g'),
                       group_properties=group_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['gtnh'])
@@ -64,7 +64,7 @@ def test_get_server():
                       group_properties=group_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['vanilla'])
-    assert get_server(get_dummy_group_message(33333333, message_text='/whitelist list @g'),
+    assert get_server(get_dummy_group_message(33333333, message_text='/whitelist list /g'),
                       group_properties=group_properties,
                       server_properties=server_properties,
                       default_server='vanilla') == ('list', ['gtnh'])
