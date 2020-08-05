@@ -74,7 +74,7 @@ def test_parse_logs():
     logs = r'''
 [22:55:47] [Server thread/INFO]: <player0> \\hi
 [23:08:54] [Server thread/WARN]: player1 moved wrongly!
-[23:14:33] [Server thread/INFO]: <player2> hi @travelers!
+[23:14:33] [Server thread/INFO]: <player2> hi @player0!
 [23:14:43] [Server thread/INFO]: <player2> do you have some magma blocks we can use?
 [23:14:44] [Server thread/INFO]: <player0> \\hello
 [23:14:54] [Server thread/INFO]: <player0> yes i do

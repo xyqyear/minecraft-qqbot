@@ -35,7 +35,7 @@ for command in commands.keys():
     @bot.on_command(command)
     async def _(message: Message):
         chat_command = message.command
-        chat_args, server_names = get_server(message.args)
+        chat_args, server_names = get_server(message)
         if inspect.iscoroutinefunction(commands[chat_command].get_command):
             mc_command, permission = await commands[chat_command].get_command(message)
         else:

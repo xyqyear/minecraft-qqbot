@@ -52,13 +52,12 @@ def get_server(message: Message, private_properties: dict = None, group_properti
         else:
             properties = group_properties
         if source_id not in properties:
+            properties[source_id] = dict()
+            properties[source_id]['default_server'] = default_server
             # if not in test environment
             if group_properties is None:
                 config.group_properties[source_id] = dict()
                 config.group_properties[source_id]['default_server'] = default_server
-            else:
-                properties[source_id] = dict()
-                properties[source_id]['default_server'] = default_server
 
     # same for private messages
     else:
@@ -68,12 +67,11 @@ def get_server(message: Message, private_properties: dict = None, group_properti
         else:
             properties = private_properties
         if source_id not in properties:
+            properties[source_id] = dict()
+            properties[source_id]['default_server'] = default_server
             if private_properties is None:
                 config.private_properties[source_id] = dict()
                 config.private_properties[source_id]['default_server'] = default_server
-            else:
-                properties[source_id] = dict()
-                properties[source_id]['default_server'] = default_server
 
     if server_properties is None:
         server_properties = config.server_properties
