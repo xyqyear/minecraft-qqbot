@@ -7,18 +7,25 @@ server_properties:
     address: 127.0.0.1
     rcon_port: 25575
     rcon_password: super-secret
+    server2group:
+      enable: true
+      default_group: 11111111
+      log_path: /path/to/log/file
     aka:
       - v
 
+group_properties:
+  11111111:
+    default_server: vanilla
+
+private_properties:
+  12345678:
+    default_server: vanilla
+
 default_server: vanilla
-
-log_path: /path/to/log/file
-
-default_group: 11111111
 
 command_say_bindings:
   12345678:  b8c8679b-a0f2-468c-9b38-79d4b0f068ac
-
 
 permissions:
   group:
