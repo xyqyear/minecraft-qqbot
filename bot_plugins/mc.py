@@ -53,7 +53,11 @@ for command in commands.keys():
             # if the person has the required permission, then perform the command on corresponding server
             # and parse the response from the server and send it to the source
             if permission_manager.validate(message, s_permission):
-                response = await send_command(server_name, mc_command)
+                try:
+                    response = await send_command(server_name, mc_command)
+                except:
+                    await message.send_back(f'"{message.message}" failed.')
+                    continue
                 parsed_response = commands[chat_command].parse_response(permission, response)
                 if parsed_response:
                     await message.send_back(parsed_response)
