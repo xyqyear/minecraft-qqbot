@@ -1,8 +1,5 @@
-import pytest
-
 from permissions import PermissionManager
-from message import Message
-from adapter import bot
+from tests.utils import get_dummy_group_message, get_dummy_private_message
 
 
 def test_register():
@@ -74,34 +71,7 @@ def test_load_user_permission():
     assert permission_manager.user_permissions == permission_dict
 
 
-def get_dummy_group_message(group_id, sender_role, sender_id):
-    message = Message(
-        bot=bot,
-        _type='group',
-        message_text='message_text',
-        command='command',
-        args='args',
-        sender_id=sender_id,
-        sender_role=sender_role,
-        group_id=group_id
-    )
-    return message
-
-
-def get_dummy_private_message(sender_id):
-    message = Message(
-        bot=bot,
-        _type='private',
-        message_text='message_text',
-        command='command',
-        args='args',
-        sender_id=sender_id,
-    )
-    return message
-
-
-@pytest.mark.asyncio
-async def test_permission_validate():
+def test_permission_validate():
     permission_manager = PermissionManager()
     permission_manager.user_permissions = {
         'group': {1111: {'default': {'vanilla.ping', 'vanilla.whitelist.list', 'gtnh.ping'},

@@ -63,6 +63,22 @@ class ConfigManager:
         self.config['server_properties'] = server_properties
 
     @property
+    def group_properties(self):
+        return self.config['group_properties']
+
+    @group_properties.setter
+    def group_properties(self, group_properties):
+        self.config['group_properties'] = group_properties
+
+    @property
+    def private_properties(self):
+        return self.config['private_properties']
+
+    @private_properties.setter
+    def private_properties(self, private_properties):
+        self.config['private_properties'] = private_properties
+
+    @property
     def default_server(self):
         return self.config['default_server']
 

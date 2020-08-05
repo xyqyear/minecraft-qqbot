@@ -96,14 +96,14 @@ class Bot:
         self.scheduler.start()
         self.app.launch_blocking()
 
-    def parse_command(self, message: str):
+    def parse_command(self, message: str, ignore_missing_command=False):
         if not message.startswith('/'):
             return
         if message[1:] in self.command_handlers:
             return message[1:], ''
         command, args = message.split(' ', 1)
         command = command[1:]
-        if command in self.command_handlers:
+        if command in self.command_handlers or ignore_missing_command:
             return command, args
 
 

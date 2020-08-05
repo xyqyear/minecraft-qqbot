@@ -1,12 +1,73 @@
 from utils.mc_utils import get_server, parse_logs
+from tests.utils import get_dummy_group_message, get_dummy_private_message
 
 
 def test_get_server():
-    server_properties = {
-        'vanilla': {'address': 'host', 'rcon_port': 25575, 'rcon_password': 'super secret', 'aka': ['v']}}
-    assert get_server('add', 'vanilla', server_properties) == ('add', ['vanilla'])
-    assert get_server('add @vanilla', 'vanilla', server_properties) == ('add', ['vanilla'])
-    assert get_server('add @v', 'vanilla', server_properties) == ('add', ['vanilla'])
+    server_properties = {'vanilla':
+                             {'aka': ['v']},
+                         'gtnh':
+                             {'aka': ['g']}}
+
+    private_properties = {11111111: {'default_server': 'vanilla'},
+                          22222222: {'default_server': 'gtnh'}}
+
+    assert get_server(get_dummy_private_message(11111111, '/whitelist list'),
+                      private_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['vanilla'])
+    assert get_server(get_dummy_private_message(11111111, '/whitelist list @v'),
+                      private_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['vanilla'])
+    assert get_server(get_dummy_private_message(11111111, '/whitelist list @vanilla'),
+                      private_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['vanilla'])
+    assert get_server(get_dummy_private_message(11111111, '/whitelist list @g'),
+                      private_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['gtnh'])
+    assert get_server(get_dummy_private_message(33333333, '/whitelist list'),
+                      private_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['vanilla'])
+
+    assert private_properties == {11111111: {'default_server': 'vanilla'},
+                                  22222222: {'default_server': 'gtnh'},
+                                  33333333: {'default_server': 'vanilla'}}
+
+    assert get_server(get_dummy_private_message(33333333, '/whitelist list @g'),
+                      private_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['gtnh'])
+
+    group_properties = {12345678: {'default_server': 'vanilla'},
+                        87654321: {'default_server': 'gtnh'}}
+
+    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list'),
+                      group_properties=group_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['vanilla'])
+    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list @v'),
+                      group_properties=group_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['vanilla'])
+    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list @vanilla'),
+                      group_properties=group_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['vanilla'])
+    assert get_server(get_dummy_group_message(12345678, message_text='/whitelist list @g'),
+                      group_properties=group_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['gtnh'])
+    assert get_server(get_dummy_group_message(33333333, message_text='/whitelist list'),
+                      group_properties=group_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['vanilla'])
+    assert get_server(get_dummy_group_message(33333333, message_text='/whitelist list @g'),
+                      group_properties=group_properties,
+                      server_properties=server_properties,
+                      default_server='vanilla') == ('list', ['gtnh'])
 
 
 def test_parse_logs():

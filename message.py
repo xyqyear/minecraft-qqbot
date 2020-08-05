@@ -1,6 +1,6 @@
 class Message:
     def __init__(self, bot, _type: str, message_text: str, command: str, args: str,
-                 sender_id: int, sender_role: str = '', group_id: int = 0):
+                 sender_id: int, sender_role: str = None, group_id: int = None):
         self.bot = bot
         self.message = message_text
         self.command = command
