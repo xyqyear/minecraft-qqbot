@@ -2,7 +2,7 @@ permissions = ('restart', )
 commands = ('restart', )
 
 
-def get_command(message, chat_args):
+def get_command(raw_message, parsed_message):
     return 'stop', 'restart'
 
 

@@ -5,14 +5,14 @@ permissions = ('say', )
 commands = ('say', 's')
 
 
-async def get_command(message, chat_args, command_say_bindings=None):
+async def get_command(raw_message, parsed_message, command_say_bindings=None):
     if not command_say_bindings:
         command_say_bindings = config.command_say_bindings
 
-    if message.sender_id in command_say_bindings:
-        sender_uuid = command_say_bindings[message.sender_id]
+    if raw_message.sender_id in command_say_bindings:
+        sender_uuid = command_say_bindings[raw_message.sender_id]
         player_name = await uuid2name(sender_uuid)
-        escaped_message = chat_args.replace('\\', '\\\\').replace('"', '\\"')
+        escaped_message = parsed_message.args.replace('\\', '\\\\').replace('"', '\\"')
 
         return f'tellraw @a {{"text": "*<{player_name}> {escaped_message}", "color": "yellow"}}', 'say'
     else:

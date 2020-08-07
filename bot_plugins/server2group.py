@@ -1,7 +1,7 @@
 from config_manager import config
 from utils.file_utils import async_get_new_content
 from utils.mc_utils import parse_logs, send_command
-from adapter import bot
+from bot.adapter import bot
 
 
 @bot.scheduler.scheduled_job('interval', seconds=1)

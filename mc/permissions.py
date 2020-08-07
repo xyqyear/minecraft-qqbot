@@ -1,5 +1,5 @@
 from config_manager import config
-from message import Message
+from bot.message import Message
 
 
 class PermissionManager:

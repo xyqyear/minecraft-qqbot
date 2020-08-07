@@ -1,4 +1,4 @@
-from permissions import PermissionManager
+from mc.permissions import PermissionManager
 from tests.utils import get_dummy_group_message, get_dummy_private_message
 
 

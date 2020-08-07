@@ -6,7 +6,7 @@ from graia.application import GraiaMiraiApplication, Session, Member, Group, Mes
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import asyncio
 
-from message import Message
+from bot.message import Message
 from config_manager import config
 
 

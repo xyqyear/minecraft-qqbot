@@ -1,5 +1,5 @@
 from config_manager import config
-from adapter import bot
+from bot.adapter import bot
 import logging
 
 if __name__ == '__main__':

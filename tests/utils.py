@@ -1,5 +1,5 @@
-from message import Message
-from adapter import bot
+from bot.message import Message
+from bot.adapter import bot
 
 
 def get_dummy_group_message(group_id: int, sender_role: str = None,

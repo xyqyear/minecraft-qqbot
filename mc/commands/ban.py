@@ -2,8 +2,8 @@ permissions = ('ban', )
 commands = ('ban', )
 
 
-def get_command(message, chat_args):
-    return f'ban {chat_args}', 'ban'
+def get_command(raw_message, parsed_message):
+    return f'ban {parsed_message.args}', 'ban'
 
 
 def parse_response(permission, response):
