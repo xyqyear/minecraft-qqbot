@@ -14,8 +14,8 @@ async def get_command(raw_message, parsed_message):
         try:
             player_list = await async_get_player_list(config.server_properties[server_name]['address'],
                                                       config.server_properties[server_name]['main_port'])
-        except asyncio.TimeoutError:
-            return '', 'Failed to connect to the server'
+        except (asyncio.TimeoutError, ConnectionRefusedError):
+            return '', f'[{server_name}] Failed to connect to the server'
         player_count = len(player_list)
 
         if player_count == 0:
