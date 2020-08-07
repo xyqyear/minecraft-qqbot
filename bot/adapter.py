@@ -32,6 +32,8 @@ class Bot:
         )
 
     async def group_message_handler(self, message: MessageChain, group: Group, member: Member):
+        tasks = list()
+
         message_text = message.asDisplay()
         if member.permission == MemberPerm.Member:
             sender_role = 'member'
@@ -51,7 +53,7 @@ class Bot:
                 group_id=group.id
             )
             for message_handler in self.message_handlers:
-                asyncio.create_task(message_handler(simple_message))
+                tasks.append(message_handler(simple_message))
 
         parsed_command = self.parse_command(message_text)
         if not parsed_command:
@@ -70,9 +72,13 @@ class Bot:
             group_id=group.id
         )
 
-        asyncio.create_task(self.command_handlers[command](message))
+        tasks.append(self.command_handlers[command](message))
+
+        await asyncio.gather(*tasks)
 
     async def private_message_handler(self, message: MessageChain, friend: Friend):
+        tasks = list()
+
         message_text = message.asDisplay()
         if self.message_handlers:
             simple_message = Message(
@@ -83,7 +89,7 @@ class Bot:
                 sender_id=friend.id
             )
             for message_handler in self.message_handlers:
-                asyncio.create_task(message_handler(simple_message))
+                tasks.append(message_handler(simple_message))
 
         parsed_command = self.parse_command(message_text)
         if not parsed_command:
@@ -100,7 +106,9 @@ class Bot:
             args=args,
         )
 
-        asyncio.create_task(self.command_handlers[command](message))
+        tasks.append(self.command_handlers[command](message))
+
+        await asyncio.gather(*tasks)
 
     async def send_group_message(self, group_id: int, message: str):
         await self.app.sendGroupMessage(group_id, MessageChain(__root__=[
