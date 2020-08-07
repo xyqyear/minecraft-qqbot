@@ -33,8 +33,16 @@ class Bot:
 
     async def group_message_handler(self, message: MessageChain, group: Group, member: Member):
         message_text = message.asDisplay()
-        for message_handler in self.message_handlers:
-            message_handler(message_text)
+        if self.message_handlers:
+            simple_message = Message(
+                bot=self,
+                raw_message=message,
+                _type='group',
+                message_text=message_text,
+                sender_id=member.id
+            )
+            for message_handler in self.message_handlers:
+                await message_handler(simple_message)
 
         parsed_command = self.parse_command(message_text)
         if not parsed_command:
@@ -50,11 +58,12 @@ class Bot:
 
         message = Message(
             bot=self,
+            raw_message=message,
             _type='group',
             message_text=message_text,
+            sender_id=member.id,
             command=command,
             args=args,
-            sender_id=member.id,
             sender_role=sender_role,
             group_id=group.id
         )
@@ -63,8 +72,16 @@ class Bot:
 
     async def private_message_handler(self, message: MessageChain, friend: Friend):
         message_text = message.asDisplay()
-        for message_handler in self.message_handlers:
-            message_handler(message_text)
+        if self.message_handlers:
+            simple_message = Message(
+                bot=self,
+                raw_message=message,
+                _type='group',
+                message_text=message_text,
+                sender_id=friend.id
+            )
+            for message_handler in self.message_handlers:
+                await message_handler(simple_message)
 
         parsed_command = self.parse_command(message_text)
         if not parsed_command:
@@ -73,11 +90,12 @@ class Bot:
 
         message = Message(
             bot=self,
+            raw_message=message,
             _type='private',
             message_text=message_text,
+            sender_id=friend.id,
             command=command,
             args=args,
-            sender_id=friend.id,
         )
 
         await self.command_handlers[command](message)
@@ -87,10 +105,16 @@ class Bot:
             Plain(message)
         ]))
 
+    async def send_raw_group_message(self, group_id: int, message: MessageChain):
+        await self.app.sendGroupMessage(group_id, message.asSendable())
+
     async def send_private_message(self, friend_id: int, message: str):
         await self.app.sendFriendMessage(friend_id, MessageChain(__root__=[
             Plain(message)
         ]))
+
+    async def send_raw_private_message(self, friend_id: int, message: MessageChain):
+        await self.app.sendFriendMessage(friend_id, message.asSendable())
 
     def on_command(self, command_str: str):
         def wrapper(f):
@@ -100,7 +124,6 @@ class Bot:
     def on_message(self):
         def wrapper(f):
             self.message_handlers.append(f)
-
         return wrapper
 
     def launch_blocking(self):
