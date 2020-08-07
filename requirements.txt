@@ -2,7 +2,6 @@ ujson
 aiohttp
 aiofiles
 asyncrcon
-aioify
 mcstatus
 apscheduler
 ruamel.yaml
