@@ -33,13 +33,22 @@ class Bot:
 
     async def group_message_handler(self, message: MessageChain, group: Group, member: Member):
         message_text = message.asDisplay()
+        if member.permission == MemberPerm.Member:
+            sender_role = 'member'
+        elif member.permission == MemberPerm.Administrator:
+            sender_role = 'admin'
+        else:
+            sender_role = 'owner'
+
         if self.message_handlers:
             simple_message = Message(
                 bot=self,
                 raw_message=message,
                 _type='group',
                 message_text=message_text,
-                sender_id=member.id
+                sender_id=member.id,
+                sender_role=sender_role,
+                group_id=group.id
             )
             for message_handler in self.message_handlers:
                 asyncio.create_task(message_handler(simple_message))
@@ -48,13 +57,6 @@ class Bot:
         if not parsed_command:
             return
         command, args = parsed_command
-
-        if member.permission == MemberPerm.Member:
-            sender_role = 'member'
-        elif member.permission == MemberPerm.Administrator:
-            sender_role = 'admin'
-        else:
-            sender_role = 'owner'
 
         message = Message(
             bot=self,

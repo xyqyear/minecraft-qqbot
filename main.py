@@ -7,6 +7,6 @@ if __name__ == '__main__':
     bot.init()
     logging.getLogger('apscheduler.executors.default').setLevel(logging.WARNING)
 
-    from bot_plugins import mc, server2group
+    from bot_plugins import mc, server2group, repeat
 
     bot.launch_blocking()
