@@ -7,6 +7,7 @@ server_properties:
     address: 127.0.0.1
     rcon_port: 25575
     rcon_password: super-secret
+    main_port: 25565
     server2group:
       enable: true
       default_group: 11111111
