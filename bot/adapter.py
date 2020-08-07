@@ -14,6 +14,7 @@ class Bot:
     def __init__(self):
         self.loop = asyncio.get_event_loop()
         self.command_handlers = dict()
+        self.message_handlers = dict()
         self.bcc = None
         self.app = None
         self.scheduler = AsyncIOScheduler()
@@ -32,6 +33,9 @@ class Bot:
 
     async def group_message_handler(self, message: MessageChain, group: Group, member: Member):
         message_text = message.asDisplay()
+        for message_handler in self.message_handlers:
+            message_handler(message_text)
+
         parsed_command = self.parse_command(message_text)
         if not parsed_command:
             return
