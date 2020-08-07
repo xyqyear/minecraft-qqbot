@@ -4,7 +4,7 @@ from asyncrcon import AsyncRCON
 from config_manager import config
 from message import Message
 
-log_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*)> (.*)')
+player_message_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*)> (.*)')
 
 
 async def send_command(server_name, mc_command: str):
@@ -92,7 +92,7 @@ def get_server(message: Message, private_properties: dict = None, group_properti
 def parse_logs(logs, startswith=None):
     if startswith is None:
         startswith = (r'\\', '、、')
-    for name, message in log_pattern.findall(logs):
+    for name, message in player_message_pattern.findall(logs):
         for start in startswith:
             if message.startswith(start):
                 yield name, message[len(start):]
