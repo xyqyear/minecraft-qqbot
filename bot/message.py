@@ -25,6 +25,6 @@ class Message:
 
     async def send_back_raw(self, message: MessageChain):
         if self.type == 'private':
-            await self.bot.send_raw_private_message(self.sender_id, message)
+            await self.bot.send_private_message(self.sender_id, message)
         elif self.type == 'group':
-            await self.bot.send_raw_group_message(self.group_id, message)
+            await self.bot.send_group_message(self.group_id, message)

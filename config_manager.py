@@ -63,14 +63,6 @@ class ConfigManager:
         self.config['server_properties'] = server_properties
 
     @property
-    def repeat(self):
-        return self.config['repeat']
-
-    @repeat.setter
-    def repeat(self, repeat):
-        self.config['repeat'] = repeat
-
-    @property
     def group_properties(self):
         return self.config['group_properties']
 

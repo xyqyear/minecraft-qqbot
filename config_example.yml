@@ -15,10 +15,6 @@ server_properties:
     aka:
       - v
 
-repeat:
-  enable: true
-  threshold: 3
-
 group_properties:
   11111111:
     default_server: vanilla
