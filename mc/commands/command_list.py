@@ -1,3 +1,5 @@
+import asyncio
+
 from config_manager import config
 from utils.mc_utils import async_get_player_list
 from mc.permissions import permission_manager
@@ -9,11 +11,13 @@ commands = ('list', 'ping', )
 async def get_command(raw_message, parsed_message):
     server_name = parsed_message.server
     if permission_manager.validate(raw_message, f'{server_name}.list'):
-        player_list = await async_get_player_list(config.server_properties[server_name]['address'],
-                                                  config.server_properties[server_name]['main_port'])
+        try:
+            player_list = await async_get_player_list(config.server_properties[server_name]['address'],
+                                                      config.server_properties[server_name]['main_port'])
+        except asyncio.TimeoutError:
+            return '', 'Failed to connect to the server'
         player_count = len(player_list)
 
-        response = ''
         if player_count == 0:
             response = 'No player is online'
         elif player_count == 1:

@@ -1,4 +1,5 @@
 import re
+import asyncio
 from mcstatus.server import MinecraftServer
 from mcstatus.pinger import PingResponse
 from asyncrcon import AsyncRCON
@@ -27,15 +28,15 @@ async def async_get_status(address: str, port: int = 25565) -> PingResponse:
     return await async_get_status_from_server(server)
 
 
-async def async_get_player_list(address: str, port: int = 25565) -> tuple:
-    status = await async_get_status(address, port)
+async def async_get_player_list(address: str, port: int = 25565, timeout: int = 3) -> tuple:
+    status = await asyncio.wait_for(async_get_status(address, port), timeout=timeout)
     if status.players.online > 0:
         return tuple(player.name for player in status.players.sample)
     else:
         return tuple()
 
 
-async def send_command(server_name, mc_command: str):
+async def send_command(server_name, mc_command: str, timeout: int = 3):
     """send command to the server specified"""
     server_properties = config.server_properties
 
@@ -43,13 +44,13 @@ async def send_command(server_name, mc_command: str):
                      server_properties[server_name]['rcon_password'])
 
     try:
-        await rcon.open_connection()
-    except OSError:
+        await asyncio.wait_for(rcon.open_connection(), timeout=timeout)
+    except (OSError, asyncio.TimeoutError):
         return 'Failed to connect to the server'
 
     try:
-        response = await rcon.command(mc_command)
-    except OSError:
+        response = await asyncio.wait_for(rcon.command(mc_command), timeout=timeout)
+    except (OSError, asyncio.TimeoutError):
         return 'Failed to connect to the server'
 
     rcon.close()
