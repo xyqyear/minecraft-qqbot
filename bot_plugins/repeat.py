@@ -1,3 +1,7 @@
+# this module high depends on graia and mirai
+# might need to add some feature to adapter
+# to ensure it works after changing framework
+
 from graia.application import MessageChain, Image
 from graia.application.message.elements.internal import Plain
 
