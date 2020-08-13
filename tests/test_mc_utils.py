@@ -18,7 +18,9 @@ def test_parse_logs():
 [23:17:30] [Server thread/INFO]: <player1> its ok
 [23:24:27] [Server thread/INFO]: player2 lost connection: Disconnected
 [23:24:27] [Server thread/INFO]: player2 left the game
-[23:29:49] [Server thread/INFO]: player1 lost connection: Disconnected'''
+[23:29:49] [Server thread/INFO]: player1 lost connection: Disconnected
+[20:59:18] [Server thread/INFO]: <player10> \\*<player9> [gtnh] <player10> No player is online
+'''
 
     assert [i for i in parse_logs(logs)] == [('player0', 'hi'), ('player0', 'hello'), ('player1', 'wood?'),
-                                             ('player0', 'what wood?')]
+                                             ('player0', 'what wood?'), ('player10', '*<player9> [gtnh] <player10> No player is online')]

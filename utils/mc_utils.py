@@ -9,7 +9,7 @@ from utils.network_utils import is_ipv4
 from utils.aio_utils import to_async
 from bot.message import Message
 
-player_message_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*)> (.*)')
+player_message_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*?)> (.*)')
 
 async_server_lookup = to_async(MinecraftServer.lookup)
 
