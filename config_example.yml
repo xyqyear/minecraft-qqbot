@@ -17,6 +17,7 @@ server_properties:
 
 repeat:
   enable: true
+  reverse: true
   threshold: 3
 
 group_properties:

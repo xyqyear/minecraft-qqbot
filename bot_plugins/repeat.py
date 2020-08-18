@@ -33,18 +33,29 @@ if config.repeat['enable']:
                 if each_message != last_n_messages_chopped[1]:
                     repeat_flag = False
             if repeat_flag:
-                await message.send_back_raw(message.raw_message)
+                if config.repeat['reverse']:
+                    await message.send_back_raw(message_reverse(message.raw_message))
+                else:
+                    await message.send_back_raw(message.raw_message)
 
             del last_n_messages[message.group_id][0]
 
 
+def message_reverse(message: MessageChain):
+    for component in message.__root__[1:]:
+        if isinstance(component, Plain):
+            component.text = component.text[::-1]
+
+    return MessageChain(__root__=message.__root__[1:][::-1])
+
+
 def to_comparable(message: MessageChain):
     compare_str = ''
-    for i in message.__root__[1:]:
-        if type(i) == Image:
-            compare_str += i.imageId
-        elif type(i) == Plain:
-            compare_str += i.text
+    for component in message.__root__[1:]:
+        if isinstance(component, Image):
+            compare_str += component.imageId
+        elif isinstance(component, Plain):
+            compare_str += component.text
         else:
-            compare_str += str(i)
+            compare_str += str(component)
     return compare_str

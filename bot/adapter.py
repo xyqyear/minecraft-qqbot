@@ -11,12 +11,13 @@ from config_manager import config
 
 
 class Bot:
+    bcc: Broadcast
+    app: GraiaMiraiApplication
+
     def __init__(self):
         self.loop = asyncio.get_event_loop()
         self.command_handlers = dict()
         self.message_handlers = list()
-        self.bcc = None
-        self.app = None
         self.scheduler = AsyncIOScheduler()
 
     def init(self):
