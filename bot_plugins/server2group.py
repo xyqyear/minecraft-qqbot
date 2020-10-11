@@ -21,4 +21,4 @@ async def _():
                     await bot.send_group_message(server_property['server2group']['default_group'],
                                                  f'[{server_name}] <{name}> {message}')
                 except:
-                    await send_command(server_name, f'say message "{message}" failed to send')
+                    await send_command(server_name, f'say message "{message}" failed to be sent')

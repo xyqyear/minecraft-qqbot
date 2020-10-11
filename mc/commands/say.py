@@ -16,7 +16,7 @@ async def get_command(raw_message, parsed_message, command_say_bindings=None):
 
         return f'tellraw @a {{"text": "*<{player_name}> {escaped_message}", "color": "yellow"}}', 'say'
     else:
-        return '', 'You have no in game character bound'
+        return '', 'You have no in-game character bound'
 
 
 def parse_response(permission, response):
