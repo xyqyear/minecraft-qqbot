@@ -9,6 +9,8 @@ from bot.adapter import bot
 from bot.message import Message
 from config_manager import config
 
+import random
+
 last_n_messages = dict()
 
 if config.repeat['enable']:
@@ -33,7 +35,9 @@ if config.repeat['enable']:
                 if each_message != last_n_messages_chopped[1]:
                     repeat_flag = False
             if repeat_flag:
-                if config.repeat['reverse']:
+                if config.repeat['random']:
+                    await message.send_back_raw(message_random(message.raw_message))
+                elif config.repeat['reverse']:
                     await message.send_back_raw(message_reverse(message.raw_message))
                 else:
                     await message.send_back_raw(message.raw_message)
@@ -47,6 +51,16 @@ def message_reverse(message: MessageChain):
             component.text = component.text[::-1]
 
     return MessageChain(__root__=message.__root__[1:][::-1])
+
+
+def message_random(message: MessageChain):
+    for component in message.__root__[1:]:
+        if isinstance(component, Plain):
+            component.text = ''.join(random.sample(component.text, len(component.text)))
+
+    chopped_message = message.__root__[1:]
+    random.shuffle(chopped_message)
+    return MessageChain(__root__=chopped_message)
 
 
 def to_comparable(message: MessageChain):
