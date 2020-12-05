@@ -8,20 +8,20 @@ class ConfigManager:
     def __init__(self):
         self.config = None
 
-    def load_from_file(self, path='config.yml', force=False):
+    def load_from_file(self, path: str = 'config.yml', force: bool = False):
         if not self.config or force:
             with open(path) as f:
                 self.config = yaml.load(f.read())
 
-    def load_from_string(self, string, force=False):
+    def load_from_string(self, string: str, force: bool = False):
         if not self.config or force:
             self.config = yaml.load(string)
 
-    def save_to_file(self, path='config.yml'):
+    def save_to_file(self, path: str = 'config.yml'):
         with open(path, 'w') as f:
             yaml.dump(self.config, f)
 
-    def reload(self, path=None):
+    def reload(self, path: str = None):
         if path:
             self.load_from_file(path, force=True)
         else:
@@ -31,28 +31,20 @@ class ConfigManager:
     save = save_to_file
 
     @property
-    def bot_host(self):
-        return self.config['bot_host']
+    def bot_listen_host(self) -> str:
+        return self.config['bot_listen_host']
 
-    @bot_host.setter
-    def bot_host(self, bot_host):
-        self.config['bot_host'] = bot_host
-
-    @property
-    def bot_authKey(self):
-        return self.config['bot_authKey']
-
-    @bot_authKey.setter
-    def bot_authKey(self, bot_authKey):
-        self.config['bot_authKey'] = bot_authKey
+    @bot_listen_host.setter
+    def bot_listen_host(self, bot_listen_host: str):
+        self.config['bot_listen_host'] = bot_listen_host
 
     @property
-    def bot_account(self):
-        return self.config['bot_account']
+    def bot_listen_port(self) -> int:
+        return self.config['bot_listen_port']
 
-    @bot_account.setter
-    def bot_account(self, bot_account):
-        self.config['bot_account'] = bot_account
+    @bot_listen_port.setter
+    def bot_listen_port(self, bot_listen_port: int):
+        self.config['bot_listen_port'] = bot_listen_port
 
     @property
     def server_properties(self):
@@ -61,14 +53,6 @@ class ConfigManager:
     @server_properties.setter
     def server_properties(self, server_properties):
         self.config['server_properties'] = server_properties
-
-    @property
-    def repeat(self):
-        return self.config['repeat']
-
-    @repeat.setter
-    def repeat(self, repeat):
-        self.config['repeat'] = repeat
 
     @property
     def group_properties(self):
@@ -87,20 +71,12 @@ class ConfigManager:
         self.config['private_properties'] = private_properties
 
     @property
-    def default_server(self):
+    def default_server(self) -> str:
         return self.config['default_server']
 
     @default_server.setter
-    def default_server(self, default_server):
+    def default_server(self, default_server: str):
         self.config['default_server'] = default_server
-
-    @property
-    def log_path(self):
-        return self.config['log_path']
-
-    @log_path.setter
-    def log_path(self, log_path):
-        self.config['log_path'] = log_path
 
     @property
     def default_group(self):
@@ -108,7 +84,7 @@ class ConfigManager:
 
     @default_group.setter
     def default_group(self, default_group):
-        self.default_group['log_path'] = default_group
+        self.config['default_group'] = default_group
 
     @property
     def command_say_bindings(self):

@@ -8,9 +8,9 @@ permissions = ('list', )
 commands = ('list', 'ping', )
 
 
-async def get_command(raw_message, parsed_message):
+async def get_command(session, parsed_message):
     server_name = parsed_message.server
-    if permission_manager.validate(raw_message, f'{server_name}.list'):
+    if permission_manager.validate(session, f'{server_name}.list'):
         try:
             player_list = await async_get_player_list(config.server_properties[server_name]['address'],
                                                       config.server_properties[server_name]['main_port'])

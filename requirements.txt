@@ -5,4 +5,5 @@ asyncrcon
 mcstatus
 apscheduler
 ruamel.yaml
-graia-application-mirai
+aiocqhttp
+nonebot

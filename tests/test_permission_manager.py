@@ -1,5 +1,5 @@
 from mc.permissions import PermissionManager
-from tests.utils import get_dummy_group_message, get_dummy_private_message
+from tests.utils import get_dummy_group_message_session, get_dummy_private_message_session
 
 
 def test_register():
@@ -21,16 +21,16 @@ def test_expand_permission():
     server_names = ('vanilla', 'gtnh')
 
     assert permission_manager.expand_permission('*', server_names) == {'vanilla.whitelist.reload',
-                                                                              'gtnh.whitelist.list',
-                                                                              'vanilla.ping',
-                                                                              'vanilla.whitelist.list',
-                                                                              'gtnh.whitelist.reload',
-                                                                              'gtnh.ping'}
+                                                                       'gtnh.whitelist.list',
+                                                                       'vanilla.ping',
+                                                                       'vanilla.whitelist.list',
+                                                                       'gtnh.whitelist.reload',
+                                                                       'gtnh.ping'}
 
     assert permission_manager.expand_permission('*.whitelist.*', server_names) == {'vanilla.whitelist.reload',
-                                                                                          'vanilla.whitelist.list',
-                                                                                          'gtnh.whitelist.reload',
-                                                                                          'gtnh.whitelist.list'}
+                                                                                   'vanilla.whitelist.list',
+                                                                                   'gtnh.whitelist.reload',
+                                                                                   'gtnh.whitelist.list'}
 
     assert permission_manager.expand_permission('vanilla.whitelist.*', server_names) == {
         'vanilla.whitelist.reload',
@@ -79,21 +79,21 @@ def test_permission_validate():
         'private': {2222: {'vanilla.whitelist.reload', 'gtnh.whitelist.list', 'vanilla.ping',
                            'vanilla.whitelist.list', 'gtnh.whitelist.reload', 'gtnh.ping'}}}
 
-    assert permission_manager.validate(get_dummy_group_message(1111, 'member', 2345), 'vanilla.ping')
-    assert not permission_manager.validate(get_dummy_group_message(1111, 'member', 2345), 'vanilla.whitelist.reload')
-    assert permission_manager.validate(get_dummy_group_message(1111, 'member', 2345), 'gtnh.ping')
-    assert not permission_manager.validate(get_dummy_group_message(1234, 'member', 2345), 'vanilla.ping')
-    assert permission_manager.validate(get_dummy_group_message(1111, 'member', 2345), 'vanilla.ping')
+    assert permission_manager.validate(get_dummy_group_message_session(1111, 'member', 2345), 'vanilla.ping')
+    assert not permission_manager.validate(get_dummy_group_message_session(1111, 'member', 2345), 'vanilla.whitelist.reload')
+    assert permission_manager.validate(get_dummy_group_message_session(1111, 'member', 2345), 'gtnh.ping')
+    assert not permission_manager.validate(get_dummy_group_message_session(1234, 'member', 2345), 'vanilla.ping')
+    assert permission_manager.validate(get_dummy_group_message_session(1111, 'member', 2345), 'vanilla.ping')
 
-    assert permission_manager.validate(get_dummy_group_message(1111, 'admin', 2345), 'vanilla.ping')
-    assert permission_manager.validate(get_dummy_group_message(1111, 'admin', 2345), 'vanilla.whitelist.reload')
-    assert permission_manager.validate(get_dummy_group_message(1111, 'admin', 2345), 'gtnh.ping')
-    assert not permission_manager.validate(get_dummy_group_message(1234, 'admin', 2345), 'vanilla.ping')
-    assert permission_manager.validate(get_dummy_group_message(1111, 'admin', 2345), 'vanilla.ping')
+    assert permission_manager.validate(get_dummy_group_message_session(1111, 'admin', 2345), 'vanilla.ping')
+    assert permission_manager.validate(get_dummy_group_message_session(1111, 'admin', 2345), 'vanilla.whitelist.reload')
+    assert permission_manager.validate(get_dummy_group_message_session(1111, 'admin', 2345), 'gtnh.ping')
+    assert not permission_manager.validate(get_dummy_group_message_session(1234, 'admin', 2345), 'vanilla.ping')
+    assert permission_manager.validate(get_dummy_group_message_session(1111, 'admin', 2345), 'vanilla.ping')
 
-    assert not permission_manager.validate(get_dummy_group_message(2222, 'member', 2345), 'vanilla.ping')
+    assert not permission_manager.validate(get_dummy_group_message_session(2222, 'member', 2345), 'vanilla.ping')
 
-    assert permission_manager.validate(get_dummy_private_message(2222), 'vanilla.ping')
-    assert not permission_manager.validate(get_dummy_private_message(2223), 'vanilla.ping')
-    assert permission_manager.validate(get_dummy_private_message(2222), 'vanilla.whitelist.reload')
-    assert not permission_manager.validate(get_dummy_private_message(2223), 'vanilla.whitelist.reload')
+    assert permission_manager.validate(get_dummy_private_message_session(2222), 'vanilla.ping')
+    assert not permission_manager.validate(get_dummy_private_message_session(2223), 'vanilla.ping')
+    assert permission_manager.validate(get_dummy_private_message_session(2222), 'vanilla.whitelist.reload')
+    assert not permission_manager.validate(get_dummy_private_message_session(2223), 'vanilla.whitelist.reload')

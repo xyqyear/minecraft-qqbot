@@ -1,6 +1,5 @@
-bot_host: http://localhost:12345
-bot_authKey: superSecretAuthKey
-bot_account: 12345678
+bot_listen_host: 127.0.0.1
+bot_listen_port: 10086
 
 server_properties:
   vanilla:
@@ -14,12 +13,6 @@ server_properties:
       log_path: /path/to/log/file
     aka:
       - v
-
-repeat:
-  enable: true
-  random: false
-  reverse: false
-  threshold: 3
 
 group_properties:
   11111111:

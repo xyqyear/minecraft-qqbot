@@ -1,12 +1,17 @@
-from config_manager import config
-from bot.adapter import bot
+import os
+import nonebot
 import logging
+
+from config_manager import config
 
 if __name__ == '__main__':
     config.load()
-    bot.init()
+    nonebot.init()
+    nonebot.load_plugins(
+        os.path.join(os.path.dirname(__file__), 'bot_plugins'),
+        'bot_plugins'
+    )
+
     logging.getLogger().setLevel(logging.WARNING)
 
-    from bot_plugins import mc, server2group, repeat
-
-    bot.launch_blocking()
+    nonebot.run(host=config.bot_listen_host, port=config.bot_listen_port)

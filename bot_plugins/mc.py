@@ -1,12 +1,12 @@
 import os
+import nonebot
 import inspect
 import importlib
 
-from bot.adapter import bot
-from bot.message import Message
 from mc.permissions import permission_manager
 from utils.mc_utils import send_command
 from mc.parsers import ParsedMessage
+from nonebot import on_command, CommandSession
 
 # loading commands from .py files
 commands = dict()
@@ -33,33 +33,33 @@ permission_manager.load_user_permissions()
 
 # binding commands
 for command in commands.keys():
-    @bot.on_command(command)
-    async def _(raw_message: Message):
-        parsed_message = ParsedMessage(raw_message)
+    @on_command(command, only_to_me=False)
+    async def _(session: CommandSession):
+        parsed_message = ParsedMessage(session)
         if inspect.iscoroutinefunction(commands[parsed_message.command].get_command):
-            mc_command, permission = await commands[parsed_message.command].get_command(raw_message, parsed_message)
+            mc_command, permission = await commands[parsed_message.command].get_command(session, parsed_message)
         else:
-            mc_command, permission = commands[parsed_message.command].get_command(raw_message, parsed_message)
+            mc_command, permission = commands[parsed_message.command].get_command(session, parsed_message)
 
         # if mc_command is empty, it means permission string is an error or a custom response
         if not mc_command:
             if permission:
-                await raw_message.send_back(permission)
+                await session.send(permission)
             return
 
         # permission string returned does not include server name
         full_permission = f'{parsed_message.server}.{permission}'
         # if the person has the required permission, then perform the command on corresponding server
         # and parse the response from the server and send it to the source
-        if permission_manager.validate(raw_message, full_permission):
+        if permission_manager.validate(session, full_permission):
             try:
                 response = await send_command(parsed_message.server, mc_command)
             except:
-                await raw_message.send_back(f'"{raw_message.message}" failed.')
+                await session.send(f'"{session.event.message}" failed.')
                 return
             parsed_response = commands[parsed_message.command].parse_response(permission, response)
             if parsed_response:
-                await raw_message.send_back(f'[{parsed_message.server}] {parsed_response}')
+                await session.send(f'[{parsed_message.server}] {parsed_response}')
         # could be used for no permission exception
         else:
-            await raw_message.send_back('You dont\'t have the permission to run this command.')
+            await session.send('You dont\'t have the permission to run this command.')

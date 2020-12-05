@@ -7,7 +7,6 @@ from asyncrcon import AsyncRCON
 from config_manager import config
 from utils.network_utils import is_ipv4
 from utils.aio_utils import to_async
-from bot.message import Message
 
 player_message_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*?)> (.*)')
 
@@ -36,7 +35,7 @@ async def async_get_player_list(address: str, port: int = 25565, timeout: int = 
         return tuple()
 
 
-async def send_command(server_name, mc_command: str, timeout: int = 3):
+async def send_command(server_name, mc_command: str, timeout: int = 5):
     """send command to the server specified"""
     server_properties = config.server_properties
 

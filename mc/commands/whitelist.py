@@ -2,7 +2,7 @@ permissions = ('whitelist.list', 'whitelist.reload', 'whitelist.add', 'whitelist
 commands = ('whitelist', )
 
 
-def get_command(raw_message, parsed_message):
+def get_command(session, parsed_message):
     if parsed_message.args == 'list':
         return 'whitelist list', 'whitelist.list'
     elif parsed_message.args == 'reload':

@@ -1,5 +1,5 @@
+from nonebot import CommandSession
 from config_manager import config
-from bot.message import Message
 
 
 class PermissionManager:
@@ -58,32 +58,32 @@ class PermissionManager:
         return {f'{server_name}.{permission}' for server_name in needed_server for permission in needed_permission}
 
     # permission here includes server name
-    def validate(self, message: Message, permission: str):
+    def validate(self, session: CommandSession, permission: str):
         """
         validates user permission
-        :param message: message received
+        :param session: command session from nonebot
         :param permission: permission string including server name, e.g. 'vanilla.ping'
         :return: if the invoker of the session has the permission, return True, else False
         """
-        detail_type = message.type
+        detail_type: str = session.event.detail_type
         if detail_type == 'group':
-            group_id = message.group_id
+            group_id = session.event.group_id
             if group_id in self.user_permissions['group']:
                 if permission in self.user_permissions['group'][group_id]['default']:
                     return True
-                elif message.sender_role in ('admin', 'owner') and \
+                elif session.event.sender['role'] in ('admin', 'owner') and \
                         permission in self.user_permissions[detail_type][group_id]['admin']:
                     return True
 
         else:
-            sender_id = message.sender_id
+            sender_id: int = session.event.user_id
             if sender_id in self.user_permissions['private']:
                 if permission in self.user_permissions['private'][sender_id]:
                     return True
 
         return False
 
-    def register(self, perm):
+    def register(self, perm: str):
         """register permissions, used by modules"""
         self.all_permissions.add(perm)
 
