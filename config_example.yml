@@ -47,11 +47,6 @@ permissions:
         - 'vanilla.whitelist.list'
         - 'vanilla.banlist'
         - 'vanilla.say'
-      admin:
-        - 'vanilla.whitelist.*'
-        - 'vanilla.restart'
-        - 'vanilla.ban'
-        - 'vanilla.unban'
 
   private:
     33333333:
