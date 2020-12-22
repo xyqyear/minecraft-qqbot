@@ -1,5 +1,4 @@
 import os
-import nonebot
 import inspect
 import importlib
 

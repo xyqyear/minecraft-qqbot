@@ -97,3 +97,5 @@ def test_permission_validate():
     assert not permission_manager.validate(get_dummy_private_message_session(2223), 'vanilla.ping')
     assert permission_manager.validate(get_dummy_private_message_session(2222), 'vanilla.whitelist.reload')
     assert not permission_manager.validate(get_dummy_private_message_session(2223), 'vanilla.whitelist.reload')
+
+    assert permission_manager.validate(get_dummy_group_message_session(1111, 'member', 2222), 'gtnh.whitelist.reload')

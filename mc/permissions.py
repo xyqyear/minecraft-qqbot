@@ -19,9 +19,10 @@ class PermissionManager:
         for group_id, permissions in config_user_permissions['group'].items():
             self.user_permissions['group'][group_id] = {'default': set(), 'admin': set()}
             for role in self.user_permissions['group'][group_id].keys():
-                for permission in permissions[role]:
-                    self.user_permissions['group'][group_id][role] |= \
-                        self.expand_permission(permission, server_names, all_permissions)
+                if role in permissions:
+                    for permission in permissions[role]:
+                        self.user_permissions['group'][group_id][role] |= \
+                            self.expand_permission(permission, server_names, all_permissions)
 
         # handling private permissions
         self.user_permissions['private'] = dict()
@@ -75,11 +76,10 @@ class PermissionManager:
                         permission in self.user_permissions[detail_type][group_id]['admin']:
                     return True
 
-        else:
-            sender_id: int = session.event.user_id
-            if sender_id in self.user_permissions['private']:
-                if permission in self.user_permissions['private'][sender_id]:
-                    return True
+        sender_id: int = session.event.user_id
+        if sender_id in self.user_permissions['private']:
+            if permission in self.user_permissions['private'][sender_id]:
+                return True
 
         return False
 
