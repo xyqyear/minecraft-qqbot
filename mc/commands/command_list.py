@@ -9,7 +9,19 @@ commands = ('list', 'ping', )
 
 
 async def get_command(session, parsed_message):
-    server_name = parsed_message.server
+    if parsed_message.args == 'all':
+        responses = list()
+        for server_name in config.server_properties.keys():
+            response = (await list_helper(session, server_name))[1]
+            if not response.startswith('Y'):
+                responses.append(response)
+        return '', '\n'.join(responses)
+
+    else:
+        return await list_helper(session, parsed_message.server)
+
+
+async def list_helper(session, server_name):
     if permission_manager.validate(session, f'{server_name}.list'):
         try:
             player_list = await async_get_player_list(config.server_properties[server_name]['address'],
