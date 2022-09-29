@@ -1,30 +1,22 @@
 import re
 import asyncio
-from mcstatus.server import MinecraftServer
+from mcstatus.server import JavaServer
 from mcstatus.pinger import PingResponse
 from asyncrcon import AsyncRCON
 
 from config_manager import config
 from utils.network_utils import is_ipv4
-from utils.aio_utils import to_async
 
 player_message_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*?)> (.*)')
-
-async_server_lookup = to_async(MinecraftServer.lookup)
-
-
-@to_async
-def async_get_status_from_server(server: MinecraftServer):
-    return server.status()
 
 
 async def async_get_status(address: str, port: int = 25565) -> PingResponse:
     if is_ipv4(address):
-        server = MinecraftServer(address, port)
+        server = JavaServer(address, port)
     else:
-        server = await async_server_lookup(f'{address}:{port}')
+        server = await JavaServer.async_lookup(f'{address}:{port}')
 
-    return await async_get_status_from_server(server)
+    return await server.async_status()
 
 
 async def async_get_player_list(address: str, port: int = 25565, timeout: int = 3) -> tuple:
