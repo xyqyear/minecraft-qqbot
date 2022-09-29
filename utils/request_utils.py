@@ -22,9 +22,9 @@ async def uuid2name(uuid: str, cache_file_name='', retry_count=5, timeout=5):
     async with aiohttp.ClientSession() as session:
         while retry_count:
             try:
-                async with session.get(f'https://api.mojang.com/user/profiles/{uuid.replace("-", "")}/names',
+                async with session.get(f'https://sessionserver.mojang.com/session/minecraft/profile/{uuid.replace("-", "")}',
                                        timeout=timeout) as response:
-                    name = (await response.json())[-1]['name']
+                    name = (await response.json())['name']
                     name_cache_json[uuid] = name
                     await async_write_file(cache_file_name, ujson.dumps(name_cache_json))
                     return name

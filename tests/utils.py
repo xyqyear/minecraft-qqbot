@@ -22,7 +22,9 @@ def get_dummy_group_message_session(group_id: int, sender_role: str = None,
 
     return CommandSession(nonebot.NoneBot(), event, Command(name=(command, ), func=lambda x: x,
                                                             only_to_me=False, privileged=False,
-                                                            perm_checker_func=lambda x: x,
+                                                            permission=lambda x: x,
+                                                            expire_timeout=None,
+                                                            run_timeout=None,
                                                             session_class=CommandSession),
                           current_arg=args)
 
@@ -42,6 +44,8 @@ def get_dummy_private_message_session(sender_id: int, message_text: str = '') ->
 
     return CommandSession(nonebot.NoneBot(), event, Command(name=(command, ), func=lambda x: x,
                                                             only_to_me=False, privileged=False,
-                                                            perm_checker_func=lambda x: x,
+                                                            permission=lambda x: x,
+                                                            expire_timeout=None,
+                                                            run_timeout=None,
                                                             session_class=CommandSession),
                           current_arg=args)
