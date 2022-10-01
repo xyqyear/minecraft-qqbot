@@ -7,7 +7,7 @@ from asyncrcon import AsyncRCON
 from config_manager import config
 from utils.network_utils import is_ipv4
 
-player_message_pattern = re.compile(r'\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]: <(.*?)> (.*)')
+player_message_pattern = re.compile(r'\]: <(.*?)> (.*)')
 
 
 async def async_get_status(address: str, port: int = 25565) -> PingResponse:
