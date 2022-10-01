@@ -2,7 +2,7 @@ from utils.mc_utils import parse_logs
 
 
 def test_parse_logs():
-    logs = r'''
+    logs = r"""
 [22:55:47] [Server thread/INFO]: <player0> \\hi
 [23:08:54] [Server thread/WARN]: player1 moved wrongly!
 [23:14:33] [Server thread/INFO]: <player2> hi @player0!
@@ -20,7 +20,14 @@ def test_parse_logs():
 [23:24:27] [Server thread/INFO]: player2 left the game
 [23:29:49] [Server thread/INFO]: player1 lost connection: Disconnected
 [20:59:18] [Server thread/INFO]: <player10> \\*<player9> [gtnh] <player10> No player is online
-'''
+[20:59:18] [Server thread/INFO]: <player10> \\ [23:14:44] [Server thread/INFO]: <player0> \\hello
+"""
 
-    assert [i for i in parse_logs(logs)] == [('player0', 'hi'), ('player0', 'hello'), ('player1', 'wood?'),
-                                             ('player0', 'what wood?'), ('player10', '*<player9> [gtnh] <player10> No player is online')]
+    assert [i for i in parse_logs(logs)] == [
+        ("player0", "hi"),
+        ("player0", "hello"),
+        ("player1", "wood?"),
+        ("player0", "what wood?"),
+        ("player10", "*<player9> [gtnh] <player10> No player is online"),
+        ("player10", r" [23:14:44] [Server thread/INFO]: <player0> \\hello"),
+    ]
