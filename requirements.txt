@@ -1,5 +1,5 @@
 ujson==5.5.0
-aiohttp==3.8.3
+aiohttp==3.8.5
 aiofiles==22.1.0
 asyncrcon==1.1.4
 mcstatus==9.4.2
