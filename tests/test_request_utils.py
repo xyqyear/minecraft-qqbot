@@ -7,8 +7,8 @@ import asyncio
 def test_uuid2name():
     test_uuid0 = 'b8c8679b-a0f2-468c-9b38-79d4b0f068ac'
     test_name0 = 'xyqyear'
-    test_uuid1 = '5aeefcf9-4387-4195-a62f-7fa2b03b7f9a'
-    test_name1 = 'ScuerMaxing'
+    test_uuid1 = '069a79f4-44e9-4726-a5be-fca90e38aaf5'
+    test_name1 = 'Notch'
     test_cache_file = 'test_cache_json_file'
     assert asyncio.run(uuid2name(test_uuid0, test_cache_file)) == test_name0
     with open(test_cache_file) as f:
